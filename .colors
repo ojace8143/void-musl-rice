@@ -1,0 +1,87 @@
+# ~/.colors — "void-dark" palette
+# Single source of truth for the Void/mango desktop color scheme.
+# Accent: Void green (#478061). Everything else is grayscale + accents.
+#
+#  HEX        = #RRGGBB (opaque)
+#  HEXA       = #RRGGBBAA (alpha, used by mango/fuzzel)
+#  RGBA       = rgba(r,g,b,a) equivalent
+
+# ───────────────────────────── base ─────────────────────────────
+VD_BG          #1b1f23     rgba(27,31,35,1.00)      # foot/btop/opencode background
+VD_BG_PANEL    #20252a     rgba(32,37,42,1.00)      # opencode panel
+VD_BG_ELEM     #252b30     rgba(37,43,48,1.00)      # opencode element
+VD_FG          #c9d1cf     rgba(201,209,207,1.00)   # main foreground
+VD_FG_BRIGHT   #f0f4f2     rgba(240,244,242,1.00)   # bright white
+VD_GRAY        #8b949e     rgba(139,148,158,1.00)   # mid gray / labels
+VD_DIM         #5b626b     rgba(91,98,107,1.00)     # dim gray / separators
+VD_BORDER      #505a63     rgba(80,90,99,1.00)      # borders / dividers
+
+# ─────────────────────────── accents ───────────────────────────
+VD_GREEN       #478061     rgba(71,128,97,1.00)     # PRIMARY accent (Void green)
+VD_GREEN_BR    #6fae86     rgba(111,174,134,1.00)   # bright green / success
+VD_GREEN_SOFT  #84c6bf     rgba(132,198,191,1.00)   # soft green-cyan
+VD_CYAN        #68b0a8     rgba(104,176,168,1.00)   # cyan
+VD_BLUE        #6f9fd1     rgba(111,159,209,1.00)   # blue / info / keyword
+VD_BLUE_BR     #8fb8e0     rgba(143,184,224,1.00)   # bright blue
+VD_MAGENTA     #b184c9     rgba(177,132,201,1.00)   # magenta
+VD_MAGENTA_BR  #c79ed6     rgba(199,158,214,1.00)   # bright magenta
+VD_YELLOW      #d8b26b     rgba(216,178,107,1.00)   # yellow / warning
+VD_YELLOW_BR   #e6c88a     rgba(230,200,138,1.00)   # bright yellow
+VD_RED         #c46a6a     rgba(196,106,106,1.00)   # red / error
+VD_RED_BR      #d98a8a     rgba(217,138,138,1.00)   # bright red
+VD_CURSOR      #e9eef0     rgba(233,238,240,1.00)   # terminal cursor
+
+# ──────────────────────── ANSI (foot 0–15) ─────────────────────
+ANSI_BLACK      #1b1f23
+ANSI_RED        #c46a6a
+ANSI_GREEN      #478061
+ANSI_YELLOW     #d8b26b
+ANSI_BLUE       #6f9fd1
+ANSI_MAGENTA    #b184c9
+ANSI_CYAN       #68b0a8
+ANSI_WHITE      #c9d1cf
+ANSI_BBLACK     #505a63
+ANSI_BRED       #d98a8a
+ANSI_BGREEN     #6fae86
+ANSI_BYELLOW    #e6c88a
+ANSI_BBLUE      #8fb8e0
+ANSI_BMAGENTA   #c79ed6
+ANSI_BCYAN      #84c6bf
+ANSI_BWHITE     #f0f4f2
+
+# ─────────────────────── waybar / UI extras ────────────────────
+WAYBAR_BG         #1a1a1a   rgba(26,26,26,1.00)
+WAYBAR_FG         #9a9a9a   rgba(154,154,154,1.00)
+WAYBAR_MUTED      #6f6f6f   rgba(111,111,111,1.00)
+WAYBAR_HOVER_BG   #2a2a2a   rgba(42,42,42,1.00)
+WAYBAR_HOVER_FG   #cfcfcf   rgba(207,207,207,1.00)
+URGENT            #ad401f   rgba(173,64,31,1.00)     # workspace urgent / critical
+BATT_WARNING      #c9b890   rgba(201,184,144,1.00)
+BATT_CHARGING     #89aa61   rgba(137,170,97,1.00)
+AUTOSUGGEST       #565f6a   rgba(86,95,106,1.00)     # zsh-autosuggestions
+DIFF_ADD_BG       #1e2a22   rgba(30,42,34,1.00)      # opencode diff added bg
+DIFF_DEL_BG       #2a1e1e   rgba(42,30,30,1.00)      # opencode diff removed bg
+
+# ───────────────────── mango (0x = RRGGBBAA) ───────────────────
+# (0x… and #…A forms are the same color; rgba() shown for reference)
+MANGO_SHADOW      0x000000ff   rgba(0,0,0,1.00)         # shadowscolor (default)
+MANGO_ROOT        0x201b14ff   rgba(32,27,20,1.00)      # rootcolor (default)
+MANGO_BORDER      0x505a63ff   rgba(80,90,99,1.00)      # bordercolor  = VD_BORDER
+MANGO_DROP        0x8FBA7C55   rgba(143,186,124,0.33)   # dropcolor (default)
+MANGO_SPLIT       0xEB441EFF   rgba(235,68,30,1.00)     # splitcolor (default)
+MANGO_FOCUS       0x478061ff   rgba(71,128,97,1.00)     # focuscolor   = VD_GREEN
+MANGO_MAXIMIZE    0x89aa61ff   rgba(137,170,97,1.00)    # maximizescreencolor (default)
+MANGO_URGENT      0xad401fff   rgba(173,64,31,1.00)     # urgentcolor  = URGENT
+MANGO_SCRATCHPAD  0x516c93ff   rgba(81,108,147,1.00)    # scratchpadcolor (default)
+MANGO_GLOBAL      0xb153a7ff   rgba(177,83,167,1.00)    # globalcolor (default)
+MANGO_OVERLAY     0x14a57cff   rgba(20,165,124,1.00)    # overlaycolor (default)
+
+# ─────────────────── every unique value (raw) ──────────────────
+# #14a57c  #1a1a1a  #1b1f23  #1e2a22  #1e2b24  #1e2530  #201b14  #20252a
+# #23282d  #252b30  #2a1e1e  #2a2a2a  #2a3036  #2b1e1e  #33463d  #478061
+# #505a63  #516c93  #565f6a  #5b626b  #68b0a8  #6f6f6f  #6f9fd1  #6fae86
+# #84c6bf  #89aa61  #8b949e  #8fb8e0  #8FBA7C  #9a9a9a  #ad401f  #b153a7
+# #b184c9  #c46a6a  #c79ed6  #c8ccd0  #c9b890  #c9d1cf  #cfcfcf  #d8b26b
+# #d98a8a  #e6c88a  #e9eef0  #EB441E  #f0f4f2
+# 0x000000ff 0x201b14ff 0x505a63ff 0x8FBA7C55 0xEB441EFF 0x478061ff
+# 0x89aa61ff 0xad401fff 0x516c93ff 0xb153a7ff 0x14a57cff

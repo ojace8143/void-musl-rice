@@ -1,0 +1,58 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 32,
+  "spacing": 8,
+  "modules-left": ["ext/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": ["pulseaudio", "network", "cpu", "memory", "battery", "tray"],
+
+  "ext/workspaces": {
+    "format": "{name}",
+    "on-click": "activate",
+    "on-click-right": "deactivate"
+  },
+
+  "clock": {
+    "format": "\uf017  {:%a %d %b  %H:%M}",
+    "tooltip-format": "{:%Y-%m-%d %H:%M}"
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "\uf026 muted",
+    "format-icons": ["\uf026", "\uf027", "\uf028"],
+    "scroll-step": 5
+  },
+
+  "network": {
+    "format-wifi": "{icon} {signalStrength}%",
+    "format-ethernet": "\uf0e8 {ifname}",
+    "format-disconnected": "\uf05e offline",
+    "format-icons": ["\uf1eb"],
+    "tooltip-format-wifi": "{essid} - {signalStrength}%"
+  },
+
+  "cpu": {
+    "format": "\uf2db  {usage}%",
+    "interval": 2
+  },
+
+  "memory": {
+    "format": "\uf538  {used:0.1f}G",
+    "interval": 3
+  },
+
+  "battery": {
+    "states": { "warning": 30, "critical": 15 },
+    "format": "{icon} {capacity}%",
+    "format-charging": "\uf1e6 {capacity}%",
+    "format-icons": ["\uf244", "\uf243", "\uf242", "\uf241", "\uf240"],
+    "interval": 30
+  },
+
+  "tray": {
+    "icon-size": 15,
+    "spacing": 8
+  }
+}

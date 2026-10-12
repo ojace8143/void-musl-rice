@@ -1,0 +1,21 @@
+# --- OS / editor junk ---
+.DS_Store
+*.log
+*.bak
+*.bak.*
+*~
+
+# --- secrets / machine-specific (never commit) ---
+**/auth.json
+**/credentials*
+**/*.token
+**/.env
+**/known_hosts
+**/known_hosts.old
+**/id_*
+**/*.key
+
+# --- large / regenerated ---
+.config/chromium/
+**/node_modules/
+**/__pycache__/
