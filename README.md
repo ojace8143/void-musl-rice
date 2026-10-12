@@ -10,3 +10,6 @@ basically it
 
 ## ai use
 i used ai a decent amount on this project to help me fine tune and fix some stuff, specifically opencode and Big Pickle.
+
+## Notes
+feeling lazy, will make setup.sh for automatic backup and install as well as some screenshots for later
