@@ -8,5 +8,5 @@ mangowm, fuzzel, waybar
 
 basically it
 
-# ai use
+## ai use
 i used ai a decent amount on this project to help me fine tune and fix some stuff, specifically opencode and Big Pickle.
