@@ -24,7 +24,7 @@ case "$SHELL_NAME" in
 	*)        RC_FILES=".profile .bashrc .zshrc" ;;
 esac
 
-RICE_RC=".zshrc .zprofile .zshenv .zlogin .zlogout .colors"
+RICE_RC=".zshrc .zprofile .zshenv .zlogin .zlogout .colors .gtkrc-2.0"
 
 STAMP=$(date +%Y%m%d-%H%M%S)
 BACKUP_DIR="$HOME/rice-backup-$STAMP"

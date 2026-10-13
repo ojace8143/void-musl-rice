@@ -4,6 +4,18 @@
 # Ensure child processes (mango, foot, …) see the login shell as zsh
 export SHELL=/usr/bin/zsh
 
+# Wayland screen capture for Chromium/Discord (reads via xdg-desktop-portal)
+export CHROME_FLAGS="--enable-features=WebRTCPipeWireCapturer"
+
+# Toolkit theming: cursor + GTK/Qt
+export XCURSOR_THEME=Adwaita
+export XCURSOR_SIZE=24
+export QT_QPA_PLATFORMTHEME=qt6ct
+export QT_QPA_PLATFORM="wayland;xcb"
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+export GDK_BACKEND="wayland,x11"
+export MOZ_ENABLE_WAYLAND=1
+
 # Set runtime dir for Wayland
 if [ -z "$XDG_RUNTIME_DIR" ] || [ ! -d "$XDG_RUNTIME_DIR" ]; then
     export XDG_RUNTIME_DIR=/tmp/runtime-$(id -u)

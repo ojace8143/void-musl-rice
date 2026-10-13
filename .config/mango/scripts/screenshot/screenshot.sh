@@ -14,6 +14,10 @@ case "${1:-fullscreen}" in
   clipboard)
     f=$(mktemp -t screenshot-XXXXXX.png)
     grim "$f" && wl-copy < "$f"; rm -f "$f" ;;
+  annotate)
+    g=$(slurp -d); [ -z "$g" ] && exit 1
+    grim -g "$g" "$filepath"
+    satty -f "$filepath" ;;
   *)
     grim "$filepath" ;;
 esac
