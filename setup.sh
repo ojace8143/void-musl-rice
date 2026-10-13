@@ -80,6 +80,42 @@ for f in $RICE_RC; do
 	log "$f"
 done
 
+printf '5. installing system files\n'
+if [ -d "$RICE_DIR/etc" ]; then
+	if [ "$(id -u)" -eq 0 ]; then
+		PRIV=
+	elif command -v sudo >/dev/null 2>&1; then
+		PRIV=sudo
+	else
+		PRIV=
+	fi
+	if [ -n "$PRIV" ] || [ "$(id -u)" -eq 0 ]; then
+		for f in "$RICE_DIR"/etc/udev/rules.d/*.rules; do
+			[ -e "$f" ] || continue
+			$PRIV mkdir -p /etc/udev/rules.d
+			$PRIV install -m644 "$f" /etc/udev/rules.d/
+			log "/etc/udev/rules.d/$(basename "$f")"
+		done
+		$PRIV udevadm control --reload 2>/dev/null || true
+		# eudev's trigger won't re-run rules on already-present devices,
+		# so apply the backlight perms directly for this boot too.
+		for bl in /sys/class/backlight/*; do
+			[ -e "$bl/brightness" ] || continue
+			if $PRIV chgrp video "$bl/brightness" 2>/dev/null &&
+			   $PRIV chmod g+w "$bl/brightness" 2>/dev/null; then
+				log "backlight write access: $(basename "$bl")"
+			fi
+		done
+	else
+		log "skipped: need root or sudo"
+		log "run manually:"
+		log "  sudo install -m644 $RICE_DIR/etc/udev/rules.d/*.rules /etc/udev/rules.d/"
+		log "  sudo chgrp video /sys/class/backlight/*/brightness && sudo chmod g+w /sys/class/backlight/*/brightness"
+	fi
+else
+	log "no etc/ directory in the rice, nothing to do"
+fi
+
 printf '\ndone. your old files are in %s\n' "$BACKUP_DIR"
 printf 'restore everything with:\n'
 printf '  tar -xzf %s/config.tar.gz -C "%s"\n' "$BACKUP_DIR" "$HOME"
