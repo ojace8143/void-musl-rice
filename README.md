@@ -7,10 +7,6 @@ honestly pretty clean if i do say so myself
 mangowm, fuzzel, waybar
 
 basically it
-
-## ai use
-i used ai a decent amount on this project to help me fine tune and fix some stuff, specifically opencode and Big Pickle.
-
 ## install
 ```sh
 ./setup.sh
@@ -23,4 +19,11 @@ sudo install -m644 etc/udev/rules.d/90-backlight.rules /etc/udev/rules.d/
 sudo chgrp video /sys/class/backlight/*/brightness && sudo chmod g+w /sys/class/backlight/*/brightness
 ```
 
-still need screenshots for later.
+## screenies
+![screenshot1](screenies/screenshot1.png)
+![screenshot2](screenies/screenshot2.png)
+  
+## ai use
+i used ai a decent amount on this project to help me fine tune and fix some stuff, specifically opencode and Big Pickle.
+
+
