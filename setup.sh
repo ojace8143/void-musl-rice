@@ -6,6 +6,25 @@ die() { printf 'error: %s\n' "$*" >&2; exit 1; }
 
 RICE_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 
+SKIP_PACKAGES=0
+for arg in "$@"; do
+	case "$arg" in
+		--no-packages) SKIP_PACKAGES=1 ;;
+		-h|--help)
+			printf 'usage: %s [--no-packages]\n' "$0"
+			printf '  --no-packages   skip xbps package installation\n'
+			exit 0 ;;
+		*) printf 'warning: ignoring unknown argument: %s\n' "$arg" >&2 ;;
+	esac
+done
+
+# Packages this rice needs (Void xbps package names, case sensitive).
+PACKAGES="mangowc Waybar dunst swaybg fuzzel foot grim slurp satty \
+wl-clipboard cliphist wlogout swaylock swayidle wlopm brightnessctl playerctl \
+pipewire wireplumber libspa-bluetooth bluez polkit polkit-gnome gammastep SwayOSD \
+qt6ct xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk dbus \
+chromium zsh mesa-dri alsa-utils nerd-fonts-symbols-ttf noto-fonts-emoji"
+
 [ -n "${HOME:-}" ] || die "HOME is not set"
 [ -d "$RICE_DIR/.config" ] || die "no .config next to this script ($RICE_DIR)"
 
@@ -112,8 +131,64 @@ if [ -d "$RICE_DIR/etc" ]; then
 		log "  sudo install -m644 $RICE_DIR/etc/udev/rules.d/*.rules /etc/udev/rules.d/"
 		log "  sudo chgrp video /sys/class/backlight/*/brightness && sudo chmod g+w /sys/class/backlight/*/brightness"
 	fi
+	else
+		log "no etc/ directory in the rice, nothing to do"
+	fi
+
+printf '6. installing packages with xbps\n'
+if [ "$SKIP_PACKAGES" -eq 1 ]; then
+	log "skipped (--no-packages)"
+elif command -v xbps-install >/dev/null 2>&1; then
+	if [ "$(id -u)" -eq 0 ]; then
+		PKG_PRIV=
+	elif command -v sudo >/dev/null 2>&1; then
+		PKG_PRIV=sudo
+	else
+		PKG_PRIV=
+	fi
+	if [ -n "$PKG_PRIV" ] || [ "$(id -u)" -eq 0 ]; then
+		$PKG_PRIV xbps-install -Sy $PACKAGES || die "xbps-install failed"
+		log "packages installed / already up to date"
+	else
+		log "skipped: need root or sudo; run manually:"
+		log "  sudo xbps-install -Sy $PACKAGES"
+	fi
 else
-	log "no etc/ directory in the rice, nothing to do"
+	log "skipped: xbps-install not found (not a Void system?)"
+	log "install these with your package manager:"
+	log "  $PACKAGES"
+fi
+
+printf '7. user groups and system services\n'
+TARGET_USER=$(id -un)
+if [ "$(id -u)" -eq 0 ]; then
+	SYS_PRIV=
+elif command -v sudo >/dev/null 2>&1; then
+	SYS_PRIV=sudo
+else
+	SYS_PRIV=
+fi
+if [ -n "$SYS_PRIV" ] || [ "$(id -u)" -eq 0 ]; then
+	for grp in video input; do
+		if id -nG "$TARGET_USER" 2>/dev/null | tr ' ' '\n' | grep -qx "$grp"; then
+			log "$TARGET_USER already in group $grp"
+		elif grep -q "^$grp:" /etc/group 2>/dev/null; then
+			$SYS_PRIV usermod -aG "$grp" "$TARGET_USER" &&
+				log "added $TARGET_USER to group $grp"
+		fi
+	done
+	for svc in dbus polkitd bluetoothd; do
+		[ -d "/etc/sv/$svc" ] || continue
+		if [ -e "/var/service/$svc" ]; then
+			log "service already enabled: $svc"
+		elif $SYS_PRIV ln -s "/etc/sv/$svc" /var/service/; then
+			log "enabled service: $svc"
+		fi
+	done
+else
+	log "skipped: need root or sudo; run manually:"
+	log "  sudo usermod -aG video,input $TARGET_USER"
+	log "  sudo ln -s /etc/sv/dbus /etc/sv/polkitd /etc/sv/bluetoothd /var/service/"
 fi
 
 printf '\ndone. your old files are in %s\n' "$BACKUP_DIR"
