@@ -23,7 +23,8 @@ PACKAGES="mangowc Waybar dunst swaybg fuzzel foot grim slurp satty \
 wl-clipboard cliphist wlogout swaylock swayidle wlopm brightnessctl playerctl \
 pipewire wireplumber libspa-bluetooth bluez polkit polkit-gnome gammastep SwayOSD \
 qt6ct xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk dbus \
-chromium zsh mesa-dri alsa-utils nerd-fonts-symbols-ttf noto-fonts-emoji"
+chromium zsh mesa-dri alsa-utils nerd-fonts-symbols-ttf noto-fonts-emoji \
+jq wf-recorder git flatpak dejavu-fonts-ttf"
 
 [ -n "${HOME:-}" ] || die "HOME is not set"
 [ -d "$RICE_DIR/.config" ] || die "no .config next to this script ($RICE_DIR)"
@@ -189,6 +190,18 @@ else
 	log "skipped: need root or sudo; run manually:"
 	log "  sudo usermod -aG video,input $TARGET_USER"
 	log "  sudo ln -s /etc/sv/dbus /etc/sv/polkitd /etc/sv/bluetoothd /var/service/"
+fi
+
+printf '8. installing wallpapers\n'
+if [ -d "$RICE_DIR/wallpapers" ]; then
+	mkdir -p "$HOME/Pictures"
+	for wp in "$RICE_DIR"/wallpapers/*; do
+		[ -e "$wp" ] || continue
+		cp -a "$wp" "$HOME/Pictures/"
+		log "Pictures/$(basename "$wp")"
+	done
+else
+	log "no wallpapers/ next to this script, nothing to do"
 fi
 
 printf '\ndone. your old files are in %s\n' "$BACKUP_DIR"
