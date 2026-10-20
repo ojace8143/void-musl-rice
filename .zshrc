@@ -24,6 +24,10 @@ setopt NO_BEEP
 setopt PROMPT_SUBST
 setopt NUMERIC_GLOB_SORT
 
+# ------------------------------------------------------------- path / bins -
+# user binaries: opencode, ~/.local/bin, and flatpak app CLI exports
+export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH"
+
 # --------------------------------------------------------------- keys/edit -
 bindkey -e
 WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
@@ -231,3 +235,5 @@ add-zsh-hook precmd  __vd_precmd
 # (uncomment for a little void art on new shells)
 # print -P "%F{#478061}   __     __     __  %f"
 # print -P "%F{#6fae86}  |  |   /  \\  /  | %f  ~ keep it simple ~"
+
+pfetch
