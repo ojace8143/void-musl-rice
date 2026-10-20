@@ -100,7 +100,22 @@ for f in $RICE_RC; do
 	log "$f"
 done
 
-printf '5. installing system files\n'
+printf '5. installing the rice scripts\n'
+if [ -d "$RICE_DIR/.local/bin" ]; then
+	mkdir -p "$HOME/.local/bin"
+	for f in "$RICE_DIR"/.local/bin/*; do
+		[ -e "$f" ] || continue
+		name=$(basename "$f")
+		[ -L "$HOME/.local/bin/$name" ] && rm -f "$HOME/.local/bin/$name"
+		cp -a "$f" "$HOME/.local/bin/$name"
+		chmod +x "$HOME/.local/bin/$name"
+		log ".local/bin/$name"
+	done
+else
+	log "no .local/bin/ in the rice, nothing to do"
+fi
+
+printf '6. installing system files\n'
 if [ -d "$RICE_DIR/etc" ]; then
 	if [ "$(id -u)" -eq 0 ]; then
 		PRIV=
@@ -136,7 +151,7 @@ if [ -d "$RICE_DIR/etc" ]; then
 		log "no etc/ directory in the rice, nothing to do"
 	fi
 
-printf '6. installing packages with xbps\n'
+printf '7. installing packages with xbps\n'
 if [ "$SKIP_PACKAGES" -eq 1 ]; then
 	log "skipped (--no-packages)"
 elif command -v xbps-install >/dev/null 2>&1; then
@@ -160,7 +175,7 @@ else
 	log "  $PACKAGES"
 fi
 
-printf '7. user groups and system services\n'
+printf '8. user groups and system services\n'
 TARGET_USER=$(id -un)
 if [ "$(id -u)" -eq 0 ]; then
 	SYS_PRIV=
@@ -192,7 +207,7 @@ else
 	log "  sudo ln -s /etc/sv/dbus /etc/sv/polkitd /etc/sv/bluetoothd /var/service/"
 fi
 
-printf '8. installing wallpapers\n'
+printf '9. installing wallpapers\n'
 if [ -d "$RICE_DIR/wallpapers" ]; then
 	mkdir -p "$HOME/Pictures"
 	for wp in "$RICE_DIR"/wallpapers/*; do

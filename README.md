@@ -9,11 +9,18 @@ mangowm, fuzzel, waybar
 basically it
 
 lock screen: swaylock with an ImageMagick-pre-blurred wallpaper. tune with `SWAYLOCK_BLUR` (default 14), `SWAYLOCK_BRIGHTNESS` (default 65), and `SWAYLOCK_WALLPAPER`.
+
+## colors
+`~/.colors` is the single source of truth for the whole palette (void-dark, accent = Void green `#478061`). foot themes the ANSI slots from it, so terminal apps pick it up for free.
+
+`pfetch` is themed to match: it's vendored in `.local/bin/pfetch` (a patched pfetch 0.6.0) with truecolor art/palette and text colors from `.colors` — labels `VD_GRAY`, data `VD_FG`, title `VD_GREEN_BR`. vendoring means it renders on-scheme even in terminals that aren't foot. override the text colors with full escape sequences via `PF_LABEL`, `PF_DATA`, `PF_TITLE`.
 ## install
 ```sh
 ./setup.sh
 ```
 it tarballs your current `~/.config` and your shell's startup files into `~/rice-backup-<timestamp>/`, then copies the rice configs into `~/.config` and your home dir. it prints the exact `tar -xzf` commands to restore. no `.bak` files, just extractable tarballs.
+
+it also drops `.local/bin/pfetch` into `~/.local/bin` (which shadows the packaged pfetch when `~/.local/bin` is on your `PATH`).
 
 system files: `setup.sh` installs `etc/udev/rules.d/90-backlight.rules` (asks for sudo) so the `video` group can control the backlight without elogind, and applies the group perms to existing backlight devices. if you skip it or it can't get root, do it by hand:
 ```sh
