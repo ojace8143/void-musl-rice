@@ -148,6 +148,14 @@ if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init zsh)"
 fi
 
+# --------------------------------------------------------------------- fzf -
+# must come after compinit; gives ^R fzf history search, ^T file picker
+# and **<tab> fuzzy completion
+if command -v fzf >/dev/null 2>&1; then
+  source /usr/share/fzf/key-bindings.zsh
+  source /usr/share/fzf/completion.zsh
+fi
+
 # ---------------------------------------------------------- autosuggestions -
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#565f6a'
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
