@@ -7,6 +7,8 @@ honestly pretty clean if i do say so myself
 mangowm, fuzzel, waybar
 
 basically it
+
+lock screen: swaylock with an ImageMagick-pre-blurred wallpaper. tune with `SWAYLOCK_BLUR` (default 14), `SWAYLOCK_BRIGHTNESS` (default 65), and `SWAYLOCK_WALLPAPER`.
 ## install
 ```sh
 ./setup.sh

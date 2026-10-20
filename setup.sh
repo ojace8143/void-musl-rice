@@ -19,10 +19,10 @@ for arg in "$@"; do
 done
 
 # Packages this rice needs (Void xbps package names, case sensitive).
-PACKAGES="mangowc Waybar dunst swaybg fuzzel foot grim slurp satty \
+PACKAGES="mangowc Waybar dunst swaybg fuzzel foot grim slurp satty ImageMagick \
 wl-clipboard cliphist wlogout swaylock swayidle wlopm brightnessctl playerctl \
 pipewire wireplumber libspa-bluetooth bluez polkit polkit-gnome gammastep SwayOSD \
-qt6ct xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk dbus \
+qt6ct xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk dbus seatd xorg-server-xwayland zoxide eza \
 chromium zsh mesa-dri alsa-utils nerd-fonts-symbols-ttf noto-fonts-emoji \
 jq wf-recorder git flatpak dejavu-fonts-ttf"
 
@@ -170,7 +170,7 @@ else
 	SYS_PRIV=
 fi
 if [ -n "$SYS_PRIV" ] || [ "$(id -u)" -eq 0 ]; then
-	for grp in video input; do
+	for grp in video input _seatd; do
 		if id -nG "$TARGET_USER" 2>/dev/null | tr ' ' '\n' | grep -qx "$grp"; then
 			log "$TARGET_USER already in group $grp"
 		elif grep -q "^$grp:" /etc/group 2>/dev/null; then
@@ -178,7 +178,7 @@ if [ -n "$SYS_PRIV" ] || [ "$(id -u)" -eq 0 ]; then
 				log "added $TARGET_USER to group $grp"
 		fi
 	done
-	for svc in dbus polkitd bluetoothd; do
+	for svc in dbus polkitd bluetoothd seatd; do
 		[ -d "/etc/sv/$svc" ] || continue
 		if [ -e "/var/service/$svc" ]; then
 			log "service already enabled: $svc"
