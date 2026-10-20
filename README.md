@@ -14,6 +14,7 @@ lock screen: swaylock with an ImageMagick-pre-blurred wallpaper. tune with `SWAY
 `~/.colors` is the single source of truth for the whole palette (void-dark, accent = Void green `#478061`). foot themes the ANSI slots from it, so terminal apps pick it up for free.
 
 `pfetch` is themed to match: it's vendored in `.local/bin/pfetch` (a patched pfetch 0.6.0) with truecolor art/palette and text colors from `.colors` — labels `VD_GRAY`, data `VD_FG`, title `VD_GREEN_BR`. vendoring means it renders on-scheme even in terminals that aren't foot. override the text colors with full escape sequences via `PF_LABEL`, `PF_DATA`, `PF_TITLE`.
+
 ## install
 ```sh
 ./setup.sh
@@ -27,6 +28,17 @@ system files: `setup.sh` installs `etc/udev/rules.d/90-backlight.rules` (asks fo
 sudo install -m644 etc/udev/rules.d/90-backlight.rules /etc/udev/rules.d/
 sudo chgrp video /sys/class/backlight/*/brightness && sudo chmod g+w /sys/class/backlight/*/brightness
 ```
+
+## Binds
+Meta+Q           -- Terminal
+Meta+W           -- Close Window
+Meta+Space       -- Start Menu/Fuzzel
+Meta+D           -- Run Command (dmenu equivalent in dwm)
+Meta+Shift+Enter -- Chromium/Browser
+PrtSc            -- Screenshot
+Meta+PrtSc       -- Select Screenshot Area
+
+Volume up and volume down buttons should work as normal, brightness up and down should also work. Depending on your keyboard, you may have to change a few things.
 
 ## screenies
 ![screenshot1](screenies/screenshot1.png)
