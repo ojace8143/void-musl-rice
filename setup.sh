@@ -23,7 +23,7 @@ PACKAGES="mangowc Waybar dunst swaybg fuzzel foot grim slurp satty ImageMagick \
 wl-clipboard cliphist wlogout swaylock swayidle wlopm brightnessctl playerctl \
 pipewire wireplumber libspa-bluetooth bluez polkit polkit-gnome gammastep SwayOSD \
 qt6ct xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk dbus seatd xorg-server-xwayland zoxide eza \
-chromium zsh mesa-dri alsa-utils nerd-fonts-symbols-ttf noto-fonts-emoji \
+chromium zsh zsh-autosuggestions mesa-dri alsa-utils nerd-fonts-symbols-ttf noto-fonts-emoji \
 jq wf-recorder git flatpak dejavu-fonts-ttf"
 
 [ -n "${HOME:-}" ] || die "HOME is not set"
