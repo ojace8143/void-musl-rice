@@ -1,0 +1,70 @@
+# ~/.config/cmus/rc
+# Read AFTER ~/.config/cmus/autosave (see man cmus, FILES), so anything
+# here overrides auto-saved settings.
+
+# ─────────────────────────────── audio ───────────────────────────────
+# Route through PipeWire instead of the hardware directly:
+#  - mixes with other apps (no exclusive device grab)
+#  - uses PipeWire's resampler for 44.1k files on the 48k-only G733
+#  - follows the default sink, so switching output needs no config change
+#
+# Requires alsa-pipewire plus the pcm.!default definition in ~/.asoundrc
+# (this alsa-lib build does not read /usr/share/alsa/alsa.conf.d).
+set output_plugin=alsa
+set dsp.alsa.device=default
+set mixer.alsa.device=default
+# Software volume: the PipeWire ctl node exposes no hardware mixer for cmus
+# to attach to, and softvol also avoids 16-bit digital attenuation.
+set softvol=true
+set softvol_state=100 100
+
+# ──────────────────────────── colors ────────────────────────────
+# "void-dark" scheme, mirroring ~/.colors. Values are ANSI palette names,
+# because the terminal (foot) already maps 0-15 to that palette:
+#   black     = ANSI_BLACK    #1b1f23   bg
+#   gray      = ANSI_WHITE    #c9d1cf   fg
+#   darkgray  = ANSI_BBLACK   #505a63   borders / dim
+#   green     = ANSI_GREEN    #478061   primary accent
+#   lightgreen= ANSI_BGREEN   #6fae86   bright accent
+#   white     = ANSI_BWHITE   #f0f4f2   bright fg
+#   cyan      = ANSI_CYAN     #68b0a8   dirs / album headers
+#   lightred / lightyellow    #d98a8a / #e6c88a
+
+set color_win_bg=black
+set color_win_fg=gray
+set color_win_dir=cyan
+set color_win_cur=lightgreen
+set color_win_cur_attr=bold
+set color_win_sel_bg=green
+set color_win_sel_fg=white
+set color_win_cur_sel_bg=lightgreen
+set color_win_cur_sel_fg=black
+set color_win_cur_sel_attr=bold
+set color_win_inactive_sel_bg=darkgray
+set color_win_inactive_sel_fg=white
+set color_win_inactive_cur_sel_bg=darkgray
+set color_win_inactive_cur_sel_fg=lightgreen
+
+set color_win_title_bg=green
+set color_win_title_fg=white
+set color_win_title_attr=bold
+
+# NOTE: cmus renders "darkgray" as A_BOLD + black, which is invisible on a
+# dark background (foot does not brighten bold). Use the nearest 256-palette
+# gray to VD_BORDER #505a63 instead.
+set color_separator=240
+set color_titleline_bg=black
+set color_titleline_fg=lightgreen
+set color_titleline_attr=bold
+
+set color_statusline_bg=darkgray
+set color_statusline_fg=white
+set color_statusline_progress_bg=green
+set color_statusline_progress_fg=white
+
+set color_cmdline_bg=black
+set color_cmdline_fg=white
+set color_error=lightred
+set color_info=lightyellow
+set color_trackwin_album_fg=cyan
+set color_trackwin_album_attr=bold
