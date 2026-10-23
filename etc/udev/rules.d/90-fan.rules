@@ -1,0 +1,3 @@
+# Allow the video group to control the ASUS custom fan curve
+# (used by ~/.config/mango/scripts/fan/fanctl.sh, no root needed at runtime).
+ACTION=="add", SUBSYSTEM=="hwmon", ATTR{name}=="asus_custom_fan_curve", RUN+="/usr/bin/find -L /sys/class/hwmon/%k -maxdepth 1 -name pwm* -exec /usr/bin/chgrp video {} + -exec /usr/bin/chmod g+w {} +"

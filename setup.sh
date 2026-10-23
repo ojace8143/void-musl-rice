@@ -141,11 +141,16 @@ if [ -d "$RICE_DIR/etc" ]; then
 				log "backlight write access: $(basename "$bl")"
 			fi
 		done
+		# Same for the ASUS fan curve used by the fan keybinds.
+		if [ -f "$RICE_DIR/etc/fan-perms.sh" ]; then
+			$PRIV sh "$RICE_DIR/etc/fan-perms.sh" || true
+		fi
 	else
 		log "skipped: need root or sudo"
 		log "run manually:"
 		log "  sudo install -m644 $RICE_DIR/etc/udev/rules.d/*.rules /etc/udev/rules.d/"
 		log "  sudo chgrp video /sys/class/backlight/*/brightness && sudo chmod g+w /sys/class/backlight/*/brightness"
+		log "  sudo sh $RICE_DIR/etc/fan-perms.sh"
 	fi
 	else
 		log "no etc/ directory in the rice, nothing to do"

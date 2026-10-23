@@ -46,6 +46,7 @@ window#waybar {
 #pulseaudio,
 #network,
 #cpu,
+#custom-fan,
 #memory,
 #battery,
 #tray {
@@ -76,4 +77,8 @@ window#waybar {
 
 #pulseaudio.muted {
   color: #6f6f6f;
+}
+
+#custom-fan.manual {
+  color: #c9b890;
 }

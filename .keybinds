@@ -166,6 +166,12 @@ MEDIA / FUNCTION KEYS  (no modifier)
   XF86MonBrightnessUp    brightness +5%
   XF86MonBrightnessDown  brightness -5%
 
+FANS  (hold ` and press; 10% steps, both fans together)
+  `+1                    fan speed +10% (manual mode)
+  `+2                    fan speed -10%
+  `+3                    fans back to automatic
+  waybar                 XX%/XX% = left fan (CPU) / right fan (GPU)
+
 SCREENSHOTS / RECORDING
   Print                  fullscreen
   SHIFT+Print            region

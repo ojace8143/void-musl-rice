@@ -23,11 +23,16 @@ it tarballs your current `~/.config` and your shell's startup files into `~/rice
 
 it also drops `.local/bin/pfetch` into `~/.local/bin` (which shadows the packaged pfetch when `~/.local/bin` is on your `PATH`).
 
-system files: `setup.sh` installs `etc/udev/rules.d/90-backlight.rules` (asks for sudo) so the `video` group can control the backlight without elogind, and applies the group perms to existing backlight devices. if you skip it or it can't get root, do it by hand:
+system files: `setup.sh` installs `etc/udev/rules.d/90-backlight.rules` and `etc/udev/rules.d/90-fan.rules` (asks for sudo) so the `video` group can control the backlight and the ASUS fan curve without elogind, and applies the group perms to existing devices. if you skip it or it can't get root, do it by hand:
 ```sh
-sudo install -m644 etc/udev/rules.d/90-backlight.rules /etc/udev/rules.d/
+sudo install -m644 etc/udev/rules.d/90-backlight.rules etc/udev/rules.d/90-fan.rules /etc/udev/rules.d/
 sudo chgrp video /sys/class/backlight/*/brightness && sudo chmod g+w /sys/class/backlight/*/brightness
+sudo sh etc/fan-perms.sh
 ```
+
+## fans
+Hold `` ` `` and press `1` / `2` / `3` to raise, lower, or return both fans to automatic (10% steps, normal notification on each change). The waybar module shows `<fan icon> left%/right%` (left = CPU fan, right = GPU fan). In automatic mode the percentage is estimated from the measured RPM after a one-time `fanctl.sh calibrate` run, because the firmware does not expose its PWM value.
+
 
 ## Binds
 Meta+Q           -- Terminal
