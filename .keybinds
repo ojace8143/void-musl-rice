@@ -1,0 +1,176 @@
+# ~/.keybinds
+# Quick reference for this machine's keybindings.
+#   cmus   -> `man cmus`, KEYBINDINGS section (defaults, cmus 2.12.0)
+#   mango  -> ~/.config/mango/config.conf, "Key Bindings" section
+# Regenerate/verify against those sources if something drifts.
+
+
+=====================================================================
+  cmus                                                              =
+=====================================================================
+
+PLAYBACK
+  x              play (selected track)
+  c              pause / unpause
+  v              stop
+  b / z          next / previous track
+  B / Z          next / previous album
+  h / l          seek -5s / +5s          (left/right arrows too)
+  , / .          seek -1min / +1min
+  +  =           volume +10%
+  -              volume -10%
+  [ / ]          left / right channel +1%
+  { / }          fine volume -1%
+
+NAVIGATION
+  j / k          down / up               (up/down arrows too)
+  g / G          top / bottom            (home / end too)
+  Ctrl+D / Ctrl+U   half page down / up
+  Ctrl+F / Ctrl+B   page down / up       (page_down / page_up too)
+  Ctrl+E / Ctrl+Y   scroll one line down / up
+
+VIEWS  (1-7 switch view)
+  1              library (artist/album tree)
+  2              library as flat sorted list
+  3              playlist
+  4              play queue (played before everything else)
+  5              file browser
+  6              filters
+  7              settings (all options + bindings, editable with enter)
+
+WINDOWS / SELECTION
+  Tab            win-next: switch focus between tree and track list
+  Enter          win-activate: expand/collapse album, or play track
+  Space          mark / unmark track
+  i              select the currently playing track
+  D  or Del      remove from current view
+  p / P          move marked tracks after / before cursor
+  a              add to library
+  y              add to playlist
+  e / E          append / prepend to play queue
+  u              update-cache (re-read tags of selected)
+  U              win-update-cache (whole view)
+
+SEARCH
+  /              search forward (artist, album, title)
+  ?              search backward
+  n / N          next / previous match
+  //words        search artist/album only   (view 1)
+  ??words        search titles only         (views 2-4)
+
+TOGGLES  (shown on the right of the status line)
+  m              aaa_mode (all / artist / album)
+  s              shuffle
+  r              repeat
+  Ctrl+R         repeat current track
+  C              continue to next album
+  M              play library / play queue
+  o              play sorted vs tree order
+  t              show remaining time
+  f              follow the playing track
+
+COMMAND LINE
+  :              enter command mode (Tab completes, Esc cancels)
+  !              shell command shortcut
+  I              echo info about current selection
+  q              quit cmus (saves state)
+  Ctrl+L         refresh screen
+  Ctrl+C         "type :quit to exit" reminder
+
+USEFUL COMMANDS  (after ':')
+  :add ~/Music            import into library   (-p playlist, -q queue)
+  :clear                  empty current view
+  :save / :load           persist / restore library + playlists
+  :set option=value       e.g. :set repeat=true
+  :toggle repeat          flip a boolean
+  :filter artist=Incubus  persistent filter
+  :live-filter ...        change filter live
+  :mark artist=Incubus    mark matches without filtering
+  :seek +30               seek by seconds (or [HH:]MM:SS, +1m, +1h)
+  :vol +10%
+  :update-cache           rebuild metadata cache after editing tags
+  :bind -f common y win-add-q      rebind (the -f matters)
+  :unbind common y
+  :colorscheme <name>
+  :pl-create / :pl-delete / :pl-import / :pl-export
+  :view playlist
+  :shell <cmd>
+  :help / :version
+
+REMOTE CONTROL
+  cmus-remote -C "<command>"       send a command to running cmus
+  cmus-remote -Q                   dump current status as key/value
+
+
+=====================================================================
+  mango (desktop)                                  SUPER = Meta/Win =
+=====================================================================
+
+LAUNCH / SESSION
+  SUPER+Q              terminal (foot)
+  SUPER+SHIFT+Enter    chromium
+  SUPER+Space          start menu (fuzzel)
+  ALT+Space            start menu (fuzzel)
+  SUPER+D              run-command menu (runmenu.sh)
+  SUPER+R              reload mango config
+  SUPER+L              lock screen (swaylock)
+  SUPER+M              quit mango
+
+WINDOWS
+  SUPER+W / ALT+Q      close window under cursor
+  SUPER+I              minimize
+  SUPER+SHIFT+I        restore minimized
+  ALT+F                toggle fullscreen
+  ALT+SHIFT+F          toggle fake fullscreen
+  ALT+A                toggle maximize screen
+  ALT+\                toggle floating
+  ALT+Z                toggle scratchpad
+  SUPER+O              toggle overlay
+  SUPER+G              toggle global (show on all tags)
+  CTRL+SHIFT+arrows    move window by 50px
+  CTRL+ALT+arrows      resize window by 50px
+
+FOCUS / SWAP
+  ALT+arrows           focus window in direction
+  SUPER+Tab            focus next in stack
+  SUPER+SHIFT+arrows   swap window in direction
+  ALT+Shift+Left/Right focus monitor left / right
+
+TAGS (WORKSPACES) 1-9
+  SUPER+1..9           view tag
+  SUPER+SHIFT+1..9     move focused window to tag
+  SUPER+Left/Right     view tag left / right
+  CTRL+Left/Right      view side tag, carrying the focused client
+  CTRL+SUPER+Left/Right  send tag itself left / right
+  SUPER+Alt+Left/Right   move window to monitor left / right
+
+LAYOUT / GAPS
+  SUPER+N              switch layout
+  ALT+E                set proportion 1.0
+  ALT+X                switch proportion preset
+  SUPER+minus / equal  shrink / grow master factor
+  ALT+SHIFT+X / Z      increase / decrease gaps
+  ALT+SHIFT+R          toggle gaps
+  ALT+SHIFT+Return     toggle dwindle split direction
+  ALT+SUPER+CTRL+arrows  scroller: stack window in direction
+  ALT+Tab              toggle overview
+
+MEDIA / FUNCTION KEYS  (no modifier)
+  XF86AudioRaiseVolume   volume +2%
+  XF86AudioLowerVolume   volume -2%
+  XF86AudioMute          mute sink
+  XF86AudioMicMute       mute source
+  XF86AudioPlay          playerctl play-pause
+  XF86AudioNext          playerctl next
+  XF86AudioPrev          playerctl previous
+  XF86MonBrightnessUp    brightness +5%
+  XF86MonBrightnessDown  brightness -5%
+
+SCREENSHOTS / RECORDING
+  Print                  fullscreen
+  SHIFT+Print            region
+  CTRL+SHIFT+Print       window
+  CTRL+Print             to clipboard
+  SUPER+Print            annotate
+  SUPER+SHIFT+R          record region
+  SUPER+ALT+R            record full screen
