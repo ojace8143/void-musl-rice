@@ -64,17 +64,17 @@ DIFF_DEL_BG       #2a1e1e   rgba(42,30,30,1.00)      # opencode diff removed bg
 
 # ───────────────────── mango (0x = RRGGBBAA) ───────────────────
 # (0x… and #…A forms are the same color; rgba() shown for reference)
-MANGO_SHADOW      0x000000ff   rgba(0,0,0,1.00)         # shadowscolor (default)
-MANGO_ROOT        0x201b14ff   rgba(32,27,20,1.00)      # rootcolor (default)
-MANGO_BORDER      0x505a63ff   rgba(80,90,99,1.00)      # bordercolor  = VD_BORDER
-MANGO_DROP        0x8FBA7C55   rgba(143,186,124,0.33)   # dropcolor (default)
-MANGO_SPLIT       0xEB441EFF   rgba(235,68,30,1.00)     # splitcolor (default)
-MANGO_FOCUS       0x478061ff   rgba(71,128,97,1.00)     # focuscolor   = VD_GREEN
-MANGO_MAXIMIZE    0x89aa61ff   rgba(137,170,97,1.00)    # maximizescreencolor (default)
-MANGO_URGENT      0xad401fff   rgba(173,64,31,1.00)     # urgentcolor  = URGENT
-MANGO_SCRATCHPAD  0x516c93ff   rgba(81,108,147,1.00)    # scratchpadcolor (default)
-MANGO_GLOBAL      0xb153a7ff   rgba(177,83,167,1.00)    # globalcolor (default)
-MANGO_OVERLAY     0x14a57cff   rgba(20,165,124,1.00)    # overlaycolor (default)
+MANGO_SHADOW      0x000000ff   rgba(0,0,0,1.00)         # shadows_color (default)
+MANGO_ROOT        0x201b14ff   rgba(32,27,20,1.00)      # root_color (default)
+MANGO_BORDER      0x505a63ff   rgba(80,90,99,1.00)      # border_color  = VD_BORDER
+MANGO_DROP        0x8FBA7C55   rgba(143,186,124,0.33)   # drop_color (default)
+MANGO_SPLIT       0xEB441EFF   rgba(235,68,30,1.00)     # split_color (default)
+MANGO_FOCUS       0x478061ff   rgba(71,128,97,1.00)     # focus_color   = VD_GREEN
+MANGO_MAXIMIZE    0x89aa61ff   rgba(137,170,97,1.00)    # maximized_screen_color (default)
+MANGO_URGENT      0xad401fff   rgba(173,64,31,1.00)     # urgent_color  = URGENT
+MANGO_SCRATCHPAD  0x516c93ff   rgba(81,108,147,1.00)    # scratchpad_color (default)
+MANGO_GLOBAL      0xb153a7ff   rgba(177,83,167,1.00)    # global_color (default)
+MANGO_OVERLAY     0x14a57cff   rgba(20,165,124,1.00)    # overlay_color (default)
 
 # ─────────────────── every unique value (raw) ──────────────────
 # #14a57c  #1a1a1a  #1b1f23  #1e2a22  #1e2b24  #1e2530  #201b14  #20252a
