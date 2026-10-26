@@ -1,0 +1,7 @@
+# >>> void-musl-rice runtime dir >>>
+# elogind is not used here, so runit does not create XDG_RUNTIME_DIR.
+# Keep it in the standard /run/user/$UID location for Flatpak/portal paths.
+if [ -d /run/user ] && [ ! -d "/run/user/__UID__" ]; then
+    /usr/bin/install -d -m 700 -o "__USER__" -g "__USER__" "/run/user/__UID__"
+fi
+# <<< void-musl-rice runtime dir <<<

@@ -108,10 +108,18 @@ REMOTE CONTROL
 
 LAUNCH / SESSION
   SUPER+Q              terminal (foot)
+  SUPER+Return         dropdown terminal (named scratchpad)
   SUPER+SHIFT+Enter    chromium
   SUPER+Space          start menu (fuzzel)
   ALT+Space            start menu (fuzzel)
   SUPER+D              run-command menu (runmenu.sh)
+  SUPER+V              clipboard history (cliphist)
+  SUPER+Escape         power menu (lock/logout/suspend/reboot/shutdown)
+  SUPER+/              this cheat sheet
+  SUPER+CTRL+N         toggle night light (gammastep)
+  SUPER+CTRL+A         audio mixer (pavucontrol)
+  SUPER+CTRL+B         bluetooth manager (bluetui)
+  SUPER+CTRL+W         wifi manager (impala)
   SUPER+R              reload mango config
   SUPER+L              lock screen (swaylock)
   SUPER+M              quit mango
@@ -125,6 +133,9 @@ WINDOWS
   ALT+A                toggle maximize screen
   ALT+\                toggle floating
   ALT+Z                toggle scratchpad
+  SUPER+Z              swap focused window with master
+  SUPER+grave          focus last window
+  SUPER+T              toggle trackpad
   SUPER+O              toggle overlay
   SUPER+G              toggle global (show on all tags)
   CTRL+SHIFT+arrows    move window by 50px
@@ -144,11 +155,17 @@ TAGS (WORKSPACES) 1-9
   CTRL+SUPER+Left/Right  send tag itself left / right
   SUPER+Alt+Left/Right   move window to monitor left / right
 
+TRACKPAD GESTURES  (4 fingers)
+  swipe left/right     next / previous tag
+  swipe up/down        toggle overview
+  SUPER+T              toggle trackpad on/off
+
 LAYOUT / GAPS
   SUPER+N              switch layout
   ALT+E                set proportion 1.0
   ALT+X                switch proportion preset
   SUPER+minus / equal  shrink / grow master factor
+  SUPER+CTRL+minus/equal  decrease / increase master count
   ALT+SHIFT+X / Z      increase / decrease gaps
   ALT+SHIFT+R          toggle gaps
   ALT+SHIFT+Return     toggle dwindle split direction
@@ -156,15 +173,17 @@ LAYOUT / GAPS
   ALT+Tab              toggle overview
 
 MEDIA / FUNCTION KEYS  (no modifier)
-  XF86AudioRaiseVolume   volume +2%
-  XF86AudioLowerVolume   volume -2%
-  XF86AudioMute          mute sink
-  XF86AudioMicMute       mute source
-  XF86AudioPlay          playerctl play-pause
-  XF86AudioNext          playerctl next
-  XF86AudioPrev          playerctl previous
-  XF86MonBrightnessUp    brightness +5%
-  XF86MonBrightnessDown  brightness -5%
+  XF86AudioRaiseVolume   volume +2% (OSD)
+  XF86AudioLowerVolume   volume -2% (OSD)
+  XF86AudioMute          mute sink (OSD)
+  XF86AudioMicMute       mute source (OSD)
+  XF86AudioPlay          play/pause + OSD
+  XF86AudioNext          next track + OSD
+  XF86AudioPrev          previous track + OSD
+  XF86MonBrightnessUp    brightness +5% (OSD)
+  XF86MonBrightnessDown  brightness -5% (OSD)
+  XF86KbdBrightnessUp    keyboard backlight +1
+  XF86KbdBrightnessDown  keyboard backlight -1
 
 FANS  (hold ` and press; 10% steps, both fans together)
   `+1                    fan speed +10% (manual mode)
@@ -180,3 +199,13 @@ SCREENSHOTS / RECORDING
   SUPER+Print            annotate
   SUPER+SHIFT+R          record region
   SUPER+ALT+R            record full screen
+
+WAYBAR CLICKS
+  workspaces            activate / deactivate tag
+  mpris                 left play/pause, middle previous, right next
+  bluetooth             open bluetooth manager (bluetui/bluetoothctl)
+  network               open Wi-Fi manager (impala/iwctl)
+  volume                open audio mixer (pavucontrol/pulsemixer/alsamixer)
+  battery               open power menu
+  backlight scroll      brightness +/-2% with OSD
+  idle inhibitor        left click toggle

@@ -13,6 +13,9 @@ STEP=${FAN_STEP:-10}
 CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}/fanctl
 CAL_FILE=$CACHE_DIR/calibration
 FALLBACK_MAX=6000
+# Sanity range for the real fan tach.  This laptop reads ~0 RPM at idle and
+# ~2.4k RPM under load; anything outside this range is a bad sample.
+FAN_MAX_PLAUSIBLE=${FAN_MAX_PLAUSIBLE:-12000}
 
 notify() {
     title=$1
@@ -87,7 +90,12 @@ cal_max() {
             [ "$idx" = "$1" ] && [ -n "$val" ] && max=$val
         done < "$CAL_FILE"
     fi
-    [ "$max" -gt 0 ] 2>/dev/null || max=$FALLBACK_MAX
+    case "$max" in
+        ''|*[!0-9]*) max=$FALLBACK_MAX ;;
+    esac
+    if [ "$max" -lt 500 ] || [ "$max" -gt "$FAN_MAX_PLAUSIBLE" ]; then
+        max=$FALLBACK_MAX
+    fi
     printf '%s\n' "$max"
 }
 
@@ -107,6 +115,7 @@ cal_raise() {
     fan=$1
     rpm=$2
     [ -r "$CAL_FILE" ] || return 0
+    [ "$rpm" -ge 500 ] && [ "$rpm" -le "$FAN_MAX_PLAUSIBLE" ] || return 0
     cur=$(cal_max "$fan")
     [ "$rpm" -gt "$cur" ] || return 0
     m1=$(cal_max 1)
@@ -227,8 +236,8 @@ cmd_calibrate() {
     while [ "$i" -lt 30 ]; do
         r1=$(fan_rpm 1)
         r2=$(fan_rpm 2)
-        [ "$r1" -gt "$max1" ] && max1=$r1
-        [ "$r2" -gt "$max2" ] && max2=$r2
+        [ "$r1" -ge 500 ] && [ "$r1" -le "$FAN_MAX_PLAUSIBLE" ] && [ "$r1" -gt "$max1" ] && max1=$r1
+        [ "$r2" -ge 500 ] && [ "$r2" -le "$FAN_MAX_PLAUSIBLE" ] && [ "$r2" -gt "$max2" ] && max2=$r2
         if [ "$r1" -le "$prev1" ] && [ "$r2" -le "$prev2" ] && [ "$i" -gt 10 ]; then
             stable=$((stable + 1))
             [ "$stable" -ge 5 ] && break
@@ -287,7 +296,7 @@ cmd_json() {
         else
             r2=$r1
         fi
-        text="\\uf0210 ${p1}%/${p2}%"
+        text="󰈐 ${p1}%/${p2}%"
         tooltip="Manual fan curve\\nCPU fan (left): ${p1}% (${r1} RPM)\\nGPU fan (right): ${p2}% (${r2} RPM)"
         class=manual
     else
@@ -297,7 +306,7 @@ cmd_json() {
         else
             r2=$r1
         fi
-        text="\\uf0210 ${p1}%/${p2}%"
+        text="󰈐 ${p1}%/${p2}%"
         tooltip="Automatic (firmware)\\nCPU fan (left): ${r1} RPM (${p1}%)\\nGPU fan (right): ${r2} RPM (${p2}%)"
         class=auto
     fi

@@ -1,0 +1,35 @@
+window {
+  background-color: rgba(26, 26, 26, 0.96);
+  border: 2px solid #478061;
+  border-radius: 8px;
+  color: #c9d1cf;
+  font-family: "JetBrainsMono Nerd Font Mono";
+  font-size: 14px;
+  padding: 10px 16px;
+}
+
+#container {
+  min-width: 220px;
+}
+
+progressbar {
+  min-height: 8px;
+}
+
+trough {
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+
+progress {
+  background: #478061;
+  border-radius: 4px;
+}
+
+label {
+  color: #c9d1cf;
+}
+
+image {
+  color: #6fae86;
+}

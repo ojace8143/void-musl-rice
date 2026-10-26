@@ -33,12 +33,13 @@ bindkey -e
 WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
 
 # ----------------------------------------------------------------- aliases -
-alias ls='eza -lh --group-directories-first --icons=auto'
-alias ll='eza -lah --group-directories-first --icons=auto'
-alias la='ls -a'
-alias lt='eza --tree --level=2 --long --icons --git'
-alias lta='eza --tree --level=2 --long --icons --git -lah'
-alias cd='z'
+if command -v eza >/dev/null 2>&1; then
+  alias ls='eza -lh --group-directories-first --icons=auto'
+  alias ll='eza -lah --group-directories-first --icons=auto'
+  alias la='ls -a'
+  alias lt='eza --tree --level=2 --long --icons --git'
+  alias lta='eza --tree --level=2 --long --icons --git -lah'
+fi
 alias grep='grep --color=auto'
 alias ip='ip --color=auto'
 alias cp='cp -iv'
@@ -150,6 +151,7 @@ zstyle ':completion:*' group-name ''
 # ------------------------------------------------------------------ zoxide -
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init zsh)"
+  alias cd='z'
 fi
 
 # --------------------------------------------------------------------- fzf -
@@ -158,6 +160,10 @@ fi
 if command -v fzf >/dev/null 2>&1; then
   source /usr/share/fzf/key-bindings.zsh
   source /usr/share/fzf/completion.zsh
+  export FZF_DEFAULT_OPTS="--color=bg+:#252b30,bg:#1b1f23,fg:#c9d1cf,hl:#6fae86,hl+:#478061,info:#8b949e,prompt:#478061,pointer:#6fae86,marker:#b184c9,spinner:#68b0a8,header:#8b949e,border:#505a63"
+  if command -v fd >/dev/null 2>&1; then
+    export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+  fi
 fi
 
 # ---------------------------------------------------------- autosuggestions -
@@ -166,6 +172,12 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=30
 if [[ -r /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
   source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+# ---------------------------------------------------- syntax highlighting -
+# Must be sourced last so it can wrap the line editor.
+if [[ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
 # ==========================================================================
@@ -236,4 +248,6 @@ add-zsh-hook precmd  __vd_precmd
 # print -P "%F{#478061}   __     __     __  %f"
 # print -P "%F{#6fae86}  |  |   /  \\  /  | %f  ~ keep it simple ~"
 
-pfetch
+if command -v pfetch >/dev/null 2>&1; then
+  pfetch
+fi

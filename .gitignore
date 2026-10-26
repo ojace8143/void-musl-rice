@@ -3,6 +3,7 @@
 *.log
 *.bak
 *.bak.*
+*.bak-*
 *~
 
 # --- secrets / machine-specific (never commit) ---

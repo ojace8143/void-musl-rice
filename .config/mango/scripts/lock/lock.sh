@@ -7,7 +7,15 @@ fi
 
 wall="${SWAYLOCK_WALLPAPER:-$HOME/Pictures/wallpaper.jpg}"
 runtime="${XDG_RUNTIME_DIR:-/tmp}"
-bg="$runtime/swaylock-bg.png"
+blur="${SWAYLOCK_BLUR:-14}"
+brightness="${SWAYLOCK_BRIGHTNESS:-65}"
+bg="$runtime/swaylock-bg-${blur}-${brightness}.png"
+
+# Avoid two lock screens if idle and lid both fire at once.
+if command -v flock >/dev/null 2>&1; then
+  exec 9>"$runtime/swaylock.lock"
+  flock -n 9 || exit 0
+fi
 
 [ -f "$wall" ] || exec swaylock
 
@@ -26,8 +34,8 @@ if [ -z "$im" ]; then
 fi
 
 if [ ! -f "$bg" ] || [ "$wall" -nt "$bg" ]; then
-  "$im" "$wall" -resize 1280x -blur "0x${SWAYLOCK_BLUR:-14}" \
-    -modulate "${SWAYLOCK_BRIGHTNESS:-65},95" "$bg" 2>/dev/null || true
+  "$im" "$wall" -resize 1280x -blur "0x${blur}" \
+    -modulate "${brightness},95" "$bg" 2>/dev/null || true
 fi
 
 if [ -f "$bg" ]; then

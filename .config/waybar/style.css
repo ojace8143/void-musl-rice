@@ -43,15 +43,55 @@ window#waybar {
 }
 
 #clock,
+#mpris,
+#bluetooth,
 #pulseaudio,
 #network,
+#custom-backlight,
 #cpu,
+#temperature,
 #custom-fan,
 #memory,
 #battery,
+#idle_inhibitor,
 #tray {
   padding: 0 10px;
   color: #9a9a9a;
+}
+
+#mpris {
+  color: #8b949e;
+}
+
+#mpris.paused {
+  color: #6f6f6f;
+  font-style: italic;
+}
+
+#bluetooth.connected {
+  color: #89aa61;
+}
+
+#bluetooth.disabled,
+#bluetooth.off,
+#bluetooth.no-controller {
+  color: #6f6f6f;
+}
+
+#temperature.warning {
+  color: #c9b890;
+}
+
+#temperature.critical {
+  color: #ad401f;
+}
+
+#idle_inhibitor.activated {
+  color: #89aa61;
+}
+
+#idle_inhibitor.deactivated {
+  color: #6f6f6f;
 }
 
 #clock {

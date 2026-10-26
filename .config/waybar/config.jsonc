@@ -3,9 +3,9 @@
   "position": "top",
   "height": 32,
   "spacing": 8,
-  "modules-left": ["ext/workspaces"],
+  "modules-left": ["ext/workspaces", "mpris"],
   "modules-center": ["clock"],
-  "modules-right": ["pulseaudio", "network", "cpu", "custom/fan", "memory", "battery", "tray"],
+  "modules-right": ["bluetooth", "network", "pulseaudio", "custom/backlight", "cpu", "temperature", "custom/fan", "memory", "battery", "idle_inhibitor", "tray"],
 
   "ext/workspaces": {
     "format": "{name}",
@@ -13,16 +13,42 @@
     "on-click-right": "deactivate"
   },
 
+  "mpris": {
+    "format": "{player_icon} {dynamic}",
+    "format-paused": "{status_icon} <i>{dynamic}</i>",
+    "max-length": 45,
+    "dynamic-len": 40,
+    "title-len": 40,
+    "artist-len": 20,
+    "player-icons": {
+      "default": "♪",
+      "cmus": "♪",
+      "chromium": "♪",
+      "mpv": "♪"
+    },
+    "status-icons": {
+      "playing": "▶",
+      "paused": "⏸",
+      "stopped": "■"
+    }
+  },
+
   "clock": {
     "format": "\uf017  {:%a %d %b  %H:%M}",
     "tooltip-format": "{:%Y-%m-%d %H:%M}"
   },
 
-  "pulseaudio": {
-    "format": "{icon} {volume}%",
-    "format-muted": "\uf026 muted",
-    "format-icons": ["\uf026", "\uf027", "\uf028"],
-    "scroll-step": 5
+  "bluetooth": {
+    "format": "\uf294  {status}",
+    "format-disabled": "\uf294  off",
+    "format-off": "\uf294",
+    "format-on": "\uf293",
+    "format-connected": "\uf293  {num_connections}",
+    "format-no-controller": "",
+    "tooltip-format": "{controller_alias}\t{controller_address}",
+    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "on-click": "$HOME/.config/mango/scripts/panel/bluetooth.sh"
   },
 
   "network": {
@@ -30,12 +56,42 @@
     "format-ethernet": "\uf0e8 {ifname}",
     "format-disconnected": "\uf05e offline",
     "format-icons": ["\uf1eb"],
-    "tooltip-format-wifi": "{essid} - {signalStrength}%"
+    "tooltip-format-wifi": "{essid} - {signalStrength}%",
+    "on-click": "$HOME/.config/mango/scripts/panel/wifi.sh"
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "\uf026 muted",
+    "format-icons": ["\uf026", "\uf027", "\uf028"],
+    "scroll-step": 2,
+    "on-click": "$HOME/.config/mango/scripts/panel/audio.sh"
+  },
+
+  "custom/backlight": {
+    "exec": "$HOME/.config/mango/scripts/panel/backlight.sh",
+    "interval": 2,
+    "format": "{}",
+    "tooltip": false,
+    "on-scroll-up": "swayosd-client --brightness=+2",
+    "on-scroll-down": "swayosd-client --brightness=-2"
   },
 
   "cpu": {
     "format": "\uf2db  {usage}%",
     "interval": 2
+  },
+
+  "temperature": {
+    "hwmon-by-name": "k10temp",
+    "input-filename": "temp1_input",
+    "format": "\uf2c7  {temperatureC}°C",
+    "format-warning": "\uf2c7  {temperatureC}°C",
+    "format-critical": "\uf2c7  {temperatureC}°C",
+    "warning-threshold": 75,
+    "critical-threshold": 90,
+    "interval": 5,
+    "tooltip-format": "CPU: {temperatureC}°C"
   },
 
   "custom/fan": {
@@ -56,7 +112,18 @@
     "format": "{icon} {capacity}%",
     "format-charging": "\uf1e6 {capacity}%",
     "format-icons": ["\uf244", "\uf243", "\uf242", "\uf241", "\uf240"],
-    "interval": 30
+    "interval": 30,
+    "on-click": "$HOME/.config/mango/scripts/power/power.sh"
+  },
+
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "󰅶",
+      "deactivated": "󰒲"
+    },
+    "tooltip-format-activated": "Idle inhibitor on",
+    "tooltip-format-deactivated": "Idle inhibitor off"
   },
 
   "tray": {

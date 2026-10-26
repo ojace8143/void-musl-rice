@@ -1,0 +1,40 @@
+# ~/.asoundrc
+#
+# alsa-pipewire ships its definitions in /usr/share/alsa/alsa.conf.d/, but
+# this alsa-lib build only pre-loads /var/lib/alsa/conf.d, /usr/etc/alsa/conf.d,
+# /etc/alsa/conf.d, /etc/asound.conf and ~/.asoundrc - so those packaged
+# files are never read. Define the PipeWire route here instead.
+#
+# With this in place, plain ALSA clients get PipeWire's mixer, its good
+# resampler, and follow the system default sink automatically.
+
+pcm.!default {
+    type pipewire
+}
+
+ctl.!default {
+    type pipewire
+}
+
+# ---------------------------------------------------------------------------
+# Optional: direct, exclusive access to the G733, bypassing PipeWire.
+# Only needed for solo "one app owns the device" playback; nothing uses it
+# unless you ask for pcm "g733". Keeps 48k/S16 since that is all the headset
+# accepts (see /proc/asound/card3/stream0).
+#
+# For better 44.1k -> 48k conversion than ALSA's built-in linear converter,
+# install alsa-plugins-speex and add this line inside pcm.g733:
+#     rate_converter "speexrate_medium"
+# ---------------------------------------------------------------------------
+pcm.g733 {
+    type plug
+    slave.pcm "hw:3,0"
+    slave.format S16_LE
+    slave.channels 2
+    slave.rate 48000
+}
+
+ctl.g733 {
+    type hw
+    card 3
+}

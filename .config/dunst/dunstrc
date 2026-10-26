@@ -2,9 +2,9 @@
     monitor = 0
     follow = mouse
     width = 340
-    height = 300
+    height = (0, 300)
     origin = top-right
-    offset = 10x42
+    offset = (10, 42)
     notification_limit = 5
     progress_bar = true
     font = JetBrainsMono Nerd Font 11
@@ -16,6 +16,7 @@
     foreground = "#c9d1cf"
     timeout = 8
     icon_position = left
+    icon_theme = "Papirus-Dark"
 
 [urgency_low]
     background = "#1a1a1a"

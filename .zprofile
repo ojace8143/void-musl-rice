@@ -6,7 +6,7 @@ export SHELL=/usr/bin/zsh
 
 # Raise open-file descriptor soft limit (Proton/Wine + UE5 games need >>4096).
 # Effective only once the hard limit is raised via /etc/security/limits.d/20-nofile.conf
-# (see ~/fix-nofile.sh); harmless otherwise.
+# (installed by setup.sh); harmless otherwise.
 ulimit -n 1048576 2>/dev/null || true
 
 # Wayland screen capture for Chromium/Discord (reads via xdg-desktop-portal)
@@ -26,7 +26,8 @@ export MOZ_ENABLE_WAYLAND=1
 # runtime dir at /run/user/$UID, and the xdg-desktop-portal file picker
 # returns file:///run/user/$UID/doc/... URIs. With the old /tmp fallback,
 # those paths didn't exist inside sandboxes ("file cannot be empty" in
-# Discord). /run/user/$UID is created at boot via /etc/rc.local.
+# Discord). /run/user/$UID is created at boot by the block setup.sh installs
+# in /etc/rc.local; if that has not run yet, fall back to /tmp.
 if [ -z "$XDG_RUNTIME_DIR" ] || [ ! -d "$XDG_RUNTIME_DIR" ]; then
     if [ -d "/run/user/$(id -u)" ]; then
         export XDG_RUNTIME_DIR=/run/user/$(id -u)
