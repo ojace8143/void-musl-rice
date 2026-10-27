@@ -3,6 +3,8 @@ my personal void linux musl rice if you want to use it ig
 
 honestly pretty clean if i do say so myself
 
+WARNING: somewhat ai generated reamde
+
 ## the deets
 mangowm, waybar, fuzzel, foot, dunst, swaylock, swayosd, cliphist
 
@@ -122,5 +124,4 @@ Keyboard equivalents: `SUPER+CTRL+A` audio, `SUPER+CTRL+B` bluetooth,
 ![screenshot2](screenies/screenshot2.png)
 
 ## ai use
-i used ai a decent amount on this project to help me fine tune and fix some stuff,
-specifically opencode and Big Pickle.
+pretty heavy ai use. had it fine tune configs, write the readme, and clean everything up to make it readable.
