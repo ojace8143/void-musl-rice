@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>void-dark</string>
+	<key>author</key>
+	<string>void-musl-rice</string>
+	<key>colorSpaceName</key>
+	<string>sRGB</string>
+	<key>semanticClass</key>
+	<string>theme.dark.void</string>
+	<key>settings</key>
+	<array>
+		<!-- base: VD_BG / VD_FG / VD_CURSOR / nvim Visual + CursorLine -->
+		<dict>
+			<key>settings</key>
+			<dict>
+				<key>background</key>
+				<string>#1b1f23</string>
+				<key>foreground</key>
+				<string>#c9d1cf</string>
+				<key>caret</key>
+				<string>#e9eef0</string>
+				<key>selection</key>
+				<string>#33463d</string>
+				<key>selectionForeground</key>
+				<string>#f0f4f2</string>
+				<key>selectionBorder</key>
+				<string>#478061</string>
+				<key>inactiveSelection</key>
+				<string>#2a3036</string>
+				<key>lineHighlight</key>
+				<string>#23282d</string>
+				<key>gutter</key>
+				<string>#1b1f23</string>
+				<key>gutterForeground</key>
+				<string>#5b626b</string>
+				<key>invisibles</key>
+				<string>#2a3036</string>
+				<key>guide</key>
+				<string>#2a3036</string>
+				<key>activeGuide</key>
+				<string>#505a63</string>
+				<key>stackGuide</key>
+				<string>#505a63</string>
+				<key>findHighlight</key>
+				<string>#d8b26b</string>
+				<key>findHighlightForeground</key>
+				<string>#1b1f23</string>
+				<key>misspelling</key>
+				<string>#c46a6a</string>
+				<key>shadow</key>
+				<string>#00000040</string>
+			</dict>
+		</dict>
+
+		<!-- comments: VD_DIM, italic (nvim Comment / @comment) -->
+		<dict>
+			<key>name</key>
+			<string>Comment</string>
+			<key>scope</key>
+			<string>comment, punctuation.definition.comment</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#5b626b</string>
+				<key>fontStyle</key>
+				<string>italic</string>
+			</dict>
+		</dict>
+
+		<!-- strings: VD_GREEN_BR (nvim String / @string) -->
+		<dict>
+			<key>name</key>
+			<string>String</string>
+			<key>scope</key>
+			<string>string, punctuation.definition.string</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#6fae86</string>
+			</dict>
+		</dict>
+
+		<!-- string escapes: VD_YELLOW (nvim @string.escape) -->
+		<dict>
+			<key>name</key>
+			<string>String Escape</string>
+			<key>scope</key>
+			<string>constant.character.escape, string constant.character.escape, string.regexp</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#d8b26b</string>
+			</dict>
+		</dict>
+
+		<!-- string interpolation: VD_CYAN_BR (nvim @string.special) -->
+		<dict>
+			<key>name</key>
+			<string>String Special</string>
+			<key>scope</key>
+			<string>string.other, string.special</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#84c6bf</string>
+			</dict>
+		</dict>
+
+		<!-- numbers / constants: VD_YELLOW (nvim Constant / Number / @constant) -->
+		<dict>
+			<key>name</key>
+			<string>Constant</string>
+			<key>scope</key>
+			<string>constant, constant.numeric, constant.language, constant.character, constant.other, support.constant, variable.other.constant, entity.name.constant</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#d8b26b</string>
+			</dict>
+		</dict>
+
+		<!-- keywords / statements / storage: VD_MAGENTA (nvim Keyword / Statement) -->
+		<dict>
+			<key>name</key>
+			<string>Keyword</string>
+			<key>scope</key>
+			<string>keyword, keyword.control, storage, storage.type, storage.modifier, storage.class, storage.function, keyword.declaration, keyword.other</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#b184c9</string>
+			</dict>
+		</dict>
+
+		<!-- operators: VD_CYAN (nvim Operator / @operator) -->
+		<dict>
+			<key>name</key>
+			<string>Operator</string>
+			<key>scope</key>
+			<string>keyword.operator, punctuation.operator, punctuation.special</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#68b0a8</string>
+			</dict>
+		</dict>
+
+		<!-- delimiters / brackets: VD_FG (nvim @punctuation.bracket) -->
+		<dict>
+			<key>name</key>
+			<string>Punctuation</string>
+			<key>scope</key>
+			<string>punctuation, punctuation.definition, punctuation.section, punctuation.terminator, punctuation.separator, punctuation.accessor, meta.brace</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#c9d1cf</string>
+			</dict>
+		</dict>
+
+		<!-- function names: VD_BLUE (nvim Function / @function) -->
+		<dict>
+			<key>name</key>
+			<string>Function</string>
+			<key>scope</key>
+			<string>entity.name.function, entity.name.function.call, support.function, support.function.builtin, meta.function-call, meta.function-call entity.name.function</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#6f9fd1</string>
+			</dict>
+		</dict>
+
+		<!-- types / classes / structs: VD_YELLOW (nvim Type) -->
+		<dict>
+			<key>name</key>
+			<string>Type</string>
+			<key>scope</key>
+			<string>entity.name.type, entity.name.class, entity.name.struct, entity.name.enum, entity.name.union, entity.other.inherited-class, support.type, support.class, support.type.builtin</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#d8b26b</string>
+			</dict>
+		</dict>
+
+		<!-- attributes / properties / fields: VD_BLUE_BR (nvim @property / @field) -->
+		<dict>
+			<key>name</key>
+			<string>Property</string>
+			<key>scope</key>
+			<string>variable.other.property, variable.other.member, variable.other.object.property, meta.object-literal.key, support.variable.property, support.type.property-name</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#8fb8e0</string>
+			</dict>
+		</dict>
+
+		<!-- namespaces / modules: VD_BLUE_BR (nvim @namespace / @module) -->
+		<dict>
+			<key>name</key>
+			<string>Namespace</string>
+			<key>scope</key>
+			<string>entity.name.namespace, entity.name.module, support.module, variable.other.namespace</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#8fb8e0</string>
+			</dict>
+		</dict>
+
+		<!-- builtin variables (this/self/super): VD_MAGENTA (nvim @variable.builtin) -->
+		<dict>
+			<key>name</key>
+			<string>Variable Builtin</string>
+			<key>scope</key>
+			<string>variable.language, variable.parameter.function.language.special</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#b184c9</string>
+			</dict>
+		</dict>
+
+		<!-- parameters: VD_FG (nvim @variable.parameter) -->
+		<dict>
+			<key>name</key>
+			<string>Parameter</string>
+			<key>scope</key>
+			<string>variable.parameter, variable</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#c9d1cf</string>
+			</dict>
+		</dict>
+
+		<!-- tags: VD_GREEN (nvim Tag / @tag) -->
+		<dict>
+			<key>name</key>
+			<string>Tag</string>
+			<key>scope</key>
+			<string>entity.name.tag, punctuation.definition.tag</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#478061</string>
+			</dict>
+		</dict>
+
+		<!-- tag attributes: VD_BLUE_BR (nvim @tag.attribute) -->
+		<dict>
+			<key>name</key>
+			<string>Tag Attribute</string>
+			<key>scope</key>
+			<string>entity.other.attribute-name, meta.tag.attribute-name</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#8fb8e0</string>
+			</dict>
+		</dict>
+
+		<!-- special / regex / symbols: VD_CYAN_BR (nvim Special) -->
+		<dict>
+			<key>name</key>
+			<string>Special</string>
+			<key>scope</key>
+			<string>special, constant.other.symbol, variable.other.symbol, support.type.exception, keyword.other.special-method</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#84c6bf</string>
+			</dict>
+		</dict>
+
+		<!-- preprocessor / macros: VD_CYAN (nvim PreProc / Macro) -->
+		<dict>
+			<key>name</key>
+			<string>Preprocessor</string>
+			<key>scope</key>
+			<string>meta.preprocessor, keyword.control.import, keyword.control.directive, entity.name.function.preprocessor, support.function.macro</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#68b0a8</string>
+			</dict>
+		</dict>
+
+		<!-- headings / titles: VD_GREEN bold -->
+		<dict>
+			<key>name</key>
+			<string>Markup Heading</string>
+			<key>scope</key>
+			<string>markup.heading, entity.name.section, markup.heading.setext</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#478061</string>
+				<key>fontStyle</key>
+				<string>bold</string>
+			</dict>
+		</dict>
+
+		<!-- links: VD_BLUE_BR underline -->
+		<dict>
+			<key>name</key>
+			<string>Markup Link</string>
+			<key>scope</key>
+			<string>markup.underline.link, markup.link, string.other.link</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#8fb8e0</string>
+				<key>fontStyle</key>
+				<string>underline</string>
+			</dict>
+		</dict>
+
+		<!-- inline code / raw: VD_YELLOW (nvim @markup.raw) -->
+		<dict>
+			<key>name</key>
+			<string>Markup Raw</string>
+			<key>scope</key>
+			<string>markup.raw, markup.raw.inline, markup.inline.raw</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#d8b26b</string>
+			</dict>
+		</dict>
+
+		<!-- lists: VD_CYAN (nvim @markup.list) -->
+		<dict>
+			<key>name</key>
+			<string>Markup List</string>
+			<key>scope</key>
+			<string>markup.list, punctuation.definition.list</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#68b0a8</string>
+			</dict>
+		</dict>
+
+		<dict>
+			<key>name</key>
+			<string>Markup Italic</string>
+			<key>scope</key>
+			<string>markup.italic</string>
+			<key>settings</key>
+			<dict>
+				<key>fontStyle</key>
+				<string>italic</string>
+			</dict>
+		</dict>
+
+		<dict>
+			<key>name</key>
+			<string>Markup Bold</string>
+			<key>scope</key>
+			<string>markup.bold</string>
+			<key>settings</key>
+			<dict>
+				<key>fontStyle</key>
+				<string>bold</string>
+			</dict>
+		</dict>
+
+		<!-- diff: nvim DiffAdd / DiffDelete / DiffChange -->
+		<dict>
+			<key>name</key>
+			<string>Diff Inserted</string>
+			<key>scope</key>
+			<string>markup.inserted, meta.diff.header.to-file, markup.inserted.diff</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#6fae86</string>
+				<key>background</key>
+				<string>#1e2b24</string>
+			</dict>
+		</dict>
+
+		<dict>
+			<key>name</key>
+			<string>Diff Deleted</string>
+			<key>scope</key>
+			<string>markup.deleted, meta.diff.header.from-file, markup.deleted.diff</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#c46a6a</string>
+				<key>background</key>
+				<string>#2b1e1e</string>
+			</dict>
+		</dict>
+
+		<dict>
+			<key>name</key>
+			<string>Diff Changed</string>
+			<key>scope</key>
+			<string>markup.changed, markup.changed.diff</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#8fb8e0</string>
+				<key>background</key>
+				<string>#1e2530</string>
+			</dict>
+		</dict>
+
+		<!-- diagnostics: VD_RED / VD_YELLOW / VD_BLUE -->
+		<dict>
+			<key>name</key>
+			<string>Invalid</string>
+			<key>scope</key>
+			<string>invalid, invalid.illegal, message.error</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#c46a6a</string>
+			</dict>
+		</dict>
+
+		<dict>
+			<key>name</key>
+			<string>Warning</string>
+			<key>scope</key>
+			<string>invalid.deprecated, message.warning</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#d8b26b</string>
+			</dict>
+		</dict>
+
+		<!-- CSS values / colors -->
+		<dict>
+			<key>name</key>
+			<string>CSS Value</string>
+			<key>scope</key>
+			<string>constant.other.color, constant.other.color.rgb-value, support.constant.property-value, support.constant.font-name</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#d8b26b</string>
+			</dict>
+		</dict>
+
+		<!-- JSON / YAML keys -->
+		<dict>
+			<key>name</key>
+			<string>Mapping Key</string>
+			<key>scope</key>
+			<string>support.type.property-name.json, meta.mapping.key.json string, entity.name.tag.yaml, string.unquoted.plain.out.yaml</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#8fb8e0</string>
+			</dict>
+		</dict>
+
+		<!-- shell: variables / options -->
+		<dict>
+			<key>name</key>
+			<string>Shell Variable</string>
+			<key>scope</key>
+			<string>variable.other.normal.shell, variable.other.special.shell, punctuation.definition.variable.shell</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#84c6bf</string>
+			</dict>
+		</dict>
+
+		<!-- git config / ini sections -->
+		<dict>
+			<key>name</key>
+			<string>Section</string>
+			<key>scope</key>
+			<string>entity.name.section.group-title, entity.name.section.diff</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#6fae86</string>
+				<key>fontStyle</key>
+				<string>bold</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

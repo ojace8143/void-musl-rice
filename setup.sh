@@ -37,7 +37,7 @@ done
 PACKAGES="mangowc Waybar dunst swaybg fuzzel foot grim slurp satty ImageMagick \
 wl-clipboard cliphist wl-clip-persist swaylock swayidle wlopm brightnessctl playerctl \
 pipewire wireplumber libspa-bluetooth bluez polkit polkit-gnome gammastep SwayOSD \
-qt5ct qt6ct xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk dbus dconf seatd xorg-server-xwayland zoxide eza \
+qt5ct qt6ct xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk dbus dconf seatd xorg-server-xwayland zoxide eza bat \
 chromium zsh zsh-autosuggestions zsh-syntax-highlighting mesa-dri alsa-utils alsa-pipewire nerd-fonts-symbols-ttf noto-fonts-emoji \
 jq wf-recorder git flatpak dejavu-fonts-ttf neovim btop cmus fzf ripgrep fd lazygit \
 arc-theme papirus-icon-theme imv mpv zathura impala bluetui pavucontrol \
@@ -263,6 +263,15 @@ else
 	log "skipped: xbps-install not found (not a Void system?)"
 	log "install these with your package manager:"
 	log "  $PACKAGES"
+fi
+
+# .config/bat was linked above, but bat only sees the theme after a cache build
+if command -v bat >/dev/null 2>&1; then
+	if bat cache --build >/dev/null 2>&1; then
+		log "built bat theme cache (void-dark)"
+	else
+		log "warning: bat cache --build failed; run it manually"
+	fi
 fi
 
 printf '8. installing the JetBrainsMono Nerd Font\n'

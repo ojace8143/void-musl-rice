@@ -40,6 +40,13 @@ if command -v eza >/dev/null 2>&1; then
   alias lt='eza --tree --level=2 --long --icons --git'
   alias lta='eza --tree --level=2 --long --icons --git -lah'
 fi
+# bat: theme lives in .config/bat/themes and mirrors ~/.colors
+if command -v bat >/dev/null 2>&1; then
+  export BAT_THEME=void-dark
+  alias cat='bat --style=plain --paging=never'
+  alias catn='bat --style=numbers,changes --paging=never'
+  alias catp='bat --style=full --paging=always'
+fi
 alias grep='grep --color=auto'
 alias ip='ip --color=auto'
 alias cp='cp -iv'

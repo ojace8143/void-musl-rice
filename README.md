@@ -57,7 +57,9 @@ If setup can't get root, it prints the manual commands.
 ## colors
 `~/.colors` is the palette reference (void-dark, accent = Void green `#478061`).
 The consumers are still hand-synced — foot, waybar, dunst, fuzzel, swaylock,
-btop, Qt, and nvim each embed their own copy. It is not a generated theme.
+btop, Qt, nvim, and `bat` each embed their own copy. It is not a generated theme.
+`bat` reads `.config/bat/themes/void-dark.tmTheme` (selected via `BAT_THEME`;
+`cat` / `catn` / `catp` are the aliases).
 
 `pfetch` is themed to match: it's vendored in `.local/bin/pfetch` (a patched
 pfetch 0.6.0) with truecolor art/palette and text colors from `.colors` — labels
