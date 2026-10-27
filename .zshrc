@@ -51,7 +51,34 @@ alias ...='cd ../..'
 alias g='git'
 alias gs='git status -sb'
 alias gl='git log --oneline --graph --decorate -20'
-alias update='sudo xbps-install -Suy'
+# update everything: xbps, flatpak (user + system), opencode
+update() {
+  emulate -L zsh
+  local rc=0
+
+  print -P "%F{#478061}::%f xbps"
+  sudo xbps-install -Suy || rc=1
+
+  if command -v flatpak >/dev/null 2>&1; then
+    print -P "%F{#478061}::%f flatpak"
+    flatpak update -y --noninteractive || rc=1
+    if [[ -d /var/lib/flatpak ]]; then
+      sudo flatpak update -y --noninteractive || rc=1
+    fi
+  fi
+
+  if command -v opencode >/dev/null 2>&1; then
+    print -P "%F{#478061}::%f opencode"
+    opencode upgrade || rc=1
+  fi
+
+  if (( rc )); then
+    print -P "%F{#c46a6a}::%f finished with errors"
+  else
+    print -P "%F{#478061}::%f all up to date"
+  fi
+  return rc
+}
 alias cls='clear'
 
 export EDITOR=nvim
