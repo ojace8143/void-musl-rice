@@ -20,7 +20,7 @@ configured xbps repository.
 ```sh
 git clone https://github.com/ojace8143/void-musl-rice
 cd void-musl-rice
-./setup.sh
+./setup.sh (for extra options keep reading)
 ```
 
 The installer walks through:
@@ -80,6 +80,20 @@ System action flags: `--no-udev`, `--no-limits`, `--no-rclocal`, `--no-groups`,
 The `.local/bin` helpers (`pfetch`, `enshrouded-fg`, `mic-reset`,
 `sudo-askpass`) shadow packaged/global versions when `~/.local/bin` is on
 `PATH`.
+
+## chromium theme
+
+The installer copies (or symlinks in `--link` mode) the Void Dark theme to
+`~/.local/share/chromium-themes/void-dark/`. Chromium's UI theme isn't
+auto-applied from a profile directory — load it manually:
+
+1. Open `chrome://extensions/`
+2. Enable "Developer mode" (top right)
+3. Click "Load unpacked"
+4. Select `~/.local/share/chromium-themes/void-dark/`
+
+The theme matches the `~/.colors` palette (Void green accents, dark grays).
+Web page content styling is not affected — use Dark Reader if desired.
 
 ### package groups
 

@@ -1567,6 +1567,23 @@ install_configs() {
 			log ".local/bin/$(basename "$f")"
 		done
 	fi
+
+	# Chromium theme (not auto-installed into profile)
+	if [ -d "$RICE_DIR/.config/chromium-theme/void-dark" ]; then
+		if [ "$DRY_RUN" -eq 1 ]; then
+			log "[dry-run] would install chromium theme to ~/.local/share/chromium-themes/void-dark"
+		else
+			ensure_dir "$HOME/.local/share/chromium-themes"
+			if [ "$MODE" = "link" ]; then
+				rm -rf "$HOME/.local/share/chromium-themes/void-dark"
+				ln -s "$RICE_DIR/.config/chromium-theme/void-dark" "$HOME/.local/share/chromium-themes/void-dark"
+			else
+				rm -rf "$HOME/.local/share/chromium-themes/void-dark"
+				cp -a "$RICE_DIR/.config/chromium-theme/void-dark" "$HOME/.local/share/chromium-themes/void-dark"
+			fi
+			log "chromium theme -> ~/.local/share/chromium-themes/void-dark (load via chrome://extensions)"
+		fi
+	fi
 }
 
 ###############################################################################

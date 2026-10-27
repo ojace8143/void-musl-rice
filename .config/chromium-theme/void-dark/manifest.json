@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Void Dark",
+  "version": "1.0.0",
+  "description": "Void dark theme matching the void-musl-rice palette",
+  "theme": {
+    "colors": {
+      "frame": [27, 31, 35],
+      "frame_inactive": [27, 31, 35],
+      "frame_incognito": [27, 31, 35],
+      "frame_incognito_inactive": [27, 31, 35],
+      "toolbar": [32, 37, 42],
+      "tab_background_text": [139, 148, 158],
+      "tab_background_text_inactive": [91, 98, 107],
+      "tab_text": [240, 244, 242],
+      "bookmark_text": [201, 209, 207],
+      "ntp_background": [27, 31, 35],
+      "ntp_text": [201, 209, 207],
+      "ntp_link": [111, 174, 134],
+      "ntp_header": [32, 37, 42],
+      "omnibox_background": [37, 43, 48],
+      "omnibox_text": [201, 209, 207],
+      "button_background": [37, 43, 48],
+      "toolbar_button_icon": [201, 209, 207],
+      "toolbar_text": [201, 209, 207]
+    },
+    "tints": {
+      "buttons": [0.33, 0.5, 0.5]
+    },
+    "properties": {
+      "ntp_background_alignment": "bottom"
+    }
+  }
+}
