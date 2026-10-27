@@ -31,8 +31,26 @@ Options:
 `--link` is the dotfiles-style mode: edits in this repo show up immediately.
 `--clean` is useful after deleting files from the rice; the default merge keeps
 things like cmus autosave, playlists, and `~/.config/opencode` data.
-It also installs `.local/bin/pfetch` (which shadows the packaged pfetch when
-`~/.local/bin` is on your `PATH`).
+It also installs the scripts in `.local/bin` (they shadow the packaged/global
+versions when `~/.local/bin` is on your `PATH`): `pfetch`, plus the helpers
+`enshrouded-fg`, `mic-reset`, and `sudo-askpass`.
+
+## config mirroring
+Everything under `.config/` in this repo is installed to `~/.config/` — the
+installer loops over the whole directory, so adding a new config dir here needs
+no `setup.sh` changes. With `--link` they become symlinks, so edits are
+immediate.
+
+Directories that mix rice config with user data are handled specially:
+
+- `cmus` — only `rc` is linked; `autosave`, `lib.pl`, and playlists stay local.
+- `opencode` — repo config is copied over in every mode; auth data,
+  `node_modules`, and runtime state stay local.
+- `gh` — `config.yml` is linked/copied; `hosts.yml` (OAuth token) stays local.
+
+Not tracked on purpose: `chromium`, `dconf`, `pulse`, and `procps` (machine
+state), plus shell histories, caches, SSH keys, and the opencode service
+password.
 
 ## system files
 `setup.sh` installs:

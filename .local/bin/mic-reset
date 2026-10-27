@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Re-initialise the G733 USB audio device. Fixes the "mic streams pure zeros"
+# state that happens after suspend/resume or a hotplug race.
+set -euo pipefail
+
+CARD=alsa_card.usb-Logitech_G733_Gaming_Headset_0000000000000000-00
+PROFILE=output:analog-stereo+input:mono-fallback
+
+echo "Cycling $CARD ..."
+pactl set-card-profile "$CARD" off
+sleep 1
+pactl set-card-profile "$CARD" "$PROFILE"
+sleep 2
+
+SRC=$(pactl get-default-source)
+echo "Default source: $SRC"
+
+echo "Recording 6s test to /tmp/mic-test.wav - speak now..."
+pw-record --target "$SRC" --rate 48000 --channels 1 --format s16 /tmp/mic-test.wav &
+PID=$!
+sleep 6
+kill "$PID" 2>/dev/null || true
+wait "$PID" 2>/dev/null || true
+
+python3 - <<'EOF'
+import wave, array
+try:
+    w = wave.open('/tmp/mic-test.wav')
+except Exception as e:
+    raise SystemExit(f"no recording: {e}")
+n, sr = w.getnframes(), w.getframerate()
+a = array.array('h'); a.frombytes(w.readframes(n)); w.close()
+pk = max(max(a), -min(a)) if a else 0
+print(f"peak={pk}  ({'NO SIGNAL' if pk == 0 else 'OK - signal present'})")
+EOF

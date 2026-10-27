@@ -1,0 +1,8 @@
+#!/bin/sh
+# Try common polkit UI agents if available
+if command -v polkit-gnome-authentication-agent-1 >/dev/null && pgrep -x polkit-gnome-authentication-agent-1 >/dev/null; then
+  :
+fi
+# Use fuzzel if running in Wayland (as a last resort, we can't really prompt properly here)
+# Better: use pkexec which should use the agent
+exec /usr/lib/polkit-1/polkit-agent-helper-1 "@"

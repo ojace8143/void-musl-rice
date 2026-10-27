@@ -143,7 +143,17 @@ for item in "$RICE_DIR"/.config/* "$RICE_DIR"/.config/.[!.]* "$RICE_DIR"/.config
 		log ".config/$name (rc linked, autosave kept)"
 		continue
 	fi
-	if [ "$LINK_MODE" -eq 1 ] && [ "$name" = "opencode" ]; then
+	if [ "$name" = "gh" ]; then
+		ghdest="$dest"
+		mkdir -p "$ghdest"
+		for f in "$item"/*; do
+			[ -e "$f" ] || continue
+			install_path "$f" "$ghdest/$(basename "$f")"
+		done
+		log ".config/$name (config installed, auth kept)"
+		continue
+	fi
+	if [ "$name" = "opencode" ]; then
 		mkdir -p "$dest"
 		cp -a "$item/." "$dest/"
 		log ".config/$name (copied, auth/node_modules kept)"

@@ -1,0 +1,106 @@
+#!/bin/sh
+# Install / inspect / remove the "Enshrouded DLSS Frame Generation" mod
+# (Nexus mod 141 by Biozilla) for the Proton install of Enshrouded.
+#
+#   enshrouded-fg install ~/Downloads/<mod>.zip
+#   enshrouded-fg status
+#   enshrouded-fg uninstall
+#
+# The mod is a Vulkan frame-gen hook loaded as powrprof.dll. Under Proton it
+# only gets loaded if the Steam launch option contains:
+#     WINEDLLOVERRIDES="powrprof=n" %command%
+set -eu
+
+GAME="${ENSHROUDED_DIR:-/media/games/SteamLibrary/steamapps/common/Enshrouded}"
+STEAM_USERDATA="$HOME/.var/app/com.valvesoftware.Steam/.local/share/Steam/userdata"
+APPID=1203620
+MOD_FILES="powrprof.dll EnshroudedVKFG.ini Streamline uninstall_framegen.bat MFGUnlocker.dll"
+BACKUP="$GAME/.framegen-backup"
+
+die() { echo "error: $*" >&2; exit 1; }
+game_running() { pgrep -f 'enshrouded\.exe' >/dev/null 2>&1; }
+
+check_env() {
+    [ -d "$GAME" ] || die "game folder not found: $GAME (set ENSHROUDED_DIR)"
+    game_running && die "Enshrouded is running - close it first"
+    return 0
+}
+
+launch_option() {
+    for f in "$STEAM_USERDATA"/*/config/localconfig.vdf; do
+        [ -f "$f" ] || continue
+        v=$(grep -a -A8 "\"$APPID\"" "$f" | grep -a -m1 '"LaunchOptions"' | sed 's/.*"LaunchOptions"[[:space:]]*//')
+        [ -n "$v" ] || v='(empty)'
+        printf '%s\n' "$v"
+        return 0
+    done
+    echo "(not set)"
+}
+
+cmd_status() {
+    echo "game dir : $GAME"
+    for f in $MOD_FILES; do
+        if [ -e "$GAME/$f" ]; then echo "  installed: $f"; else echo "  missing  : $f"; fi
+    done
+    echo "launch option: $(launch_option)"
+    game_running && echo "game state : running" || echo "game state : not running"
+}
+
+cmd_install() {
+    [ $# -ge 1 ] || die "usage: enshrouded-fg install <zip>"
+    zip=$1
+    [ -f "$zip" ] || die "no such file: $zip"
+    check_env
+    # The author's archives store Windows-style "Streamline\x.dll" names, which
+    # Info-ZIP refuses; extract via python and normalise the separators.
+    # Files that exist before the very first install are backed up so that
+    # `uninstall` can restore them; later runs leave the backup untouched.
+    python3 - "$zip" "$GAME" <<'PY' || die "extraction failed"
+import os, shutil, sys, zipfile
+zip_path, game = sys.argv[1], sys.argv[2]
+root = os.path.realpath(game)
+backup = os.path.join(game, ".framegen-backup")
+first_run = not os.path.exists(os.path.join(backup, ".complete"))
+os.makedirs(backup, exist_ok=True)
+with zipfile.ZipFile(zip_path) as zf:
+    for info in zf.infolist():
+        name = info.filename.replace("\\", "/").lstrip("/")
+        dest = os.path.realpath(os.path.join(game, name))
+        if not dest.startswith(root + os.sep):
+            print("skipping unsafe path:", name)
+            continue
+        if info.is_dir():
+            os.makedirs(dest, exist_ok=True)
+            continue
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        if first_run and os.path.exists(dest):
+            shutil.copy2(dest, os.path.join(backup, os.path.basename(dest)))
+        with zf.open(info) as src, open(dest, "wb") as out:
+            shutil.copyfileobj(src, out)
+        print("  wrote", name)
+open(os.path.join(backup, ".complete"), "w").close()
+PY
+    [ -e "$GAME/powrprof.dll" ] || die "unexpected archive layout: powrprof.dll not found in game dir"
+    [ -d "$GAME/Streamline" ] || echo "warning: no Streamline/ folder extracted - check the archive"
+    echo "installed. Now set the Steam launch option for Enshrouded to:"
+    echo '    WINEDLLOVERRIDES="powrprof=n" %command%'
+    echo "Then in-game: DLSS on, V-Sync off, Reflex on. F8 = overlay, F7 = multiplier, F6 = on/off."
+}
+
+cmd_uninstall() {
+    check_env
+    for f in $MOD_FILES; do
+        rm -rf "$GAME/$f"
+        if [ -e "$BACKUP/$f" ]; then cp -a "$BACKUP/$f" "$GAME/"; fi
+    done
+    rm -rf "$BACKUP"
+    echo "removed mod files."
+    echo "You can also clear the launch option in Steam > Enshrouded > Properties."
+}
+
+command=${1:-status}
+[ $# -gt 0 ] && shift
+case "$command" in
+    install|status|uninstall) "cmd_$command" "$@" ;;
+    *) sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; exit 1 ;;
+esac
