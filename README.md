@@ -1,5 +1,5 @@
 # void-musl-rice
-my personal void linux musl rice if you want to use it ig
+my personal void linux rice, built on musl and working on glibc too, if you want to use it ig
 
 honestly pretty clean if i do say so myself
 
@@ -11,55 +11,156 @@ mangowm, waybar, fuzzel, foot, dunst, swaylock, swayosd, cliphist
 basically it
 
 ## install
+
+Void Linux is required for the package and system steps (the configs alone
+work anywhere). Both **glibc** and **musl** installs are supported; the
+installer detects the platform and checks package availability against the
+configured xbps repository.
+
 ```sh
+git clone https://github.com/ojace8143/void-musl-rice
+cd void-musl-rice
 ./setup.sh
 ```
 
-The installer backs up your existing `~/.config` and shell startup files into
-`~/rice-backup-<timestamp>/`, then merges the rice configs into `~/.config` and
-your home directory. It prints the exact `tar -xzf` commands to restore.
+The installer walks through:
 
-Options:
+1. **Environment** — distro, architecture, glibc/musl, user, shell, sudo.
+2. **Mode** — copy/merge, symlink, or clean.
+3. **Components** — configs, packages, system integration, font, wallpapers,
+   GTK/Qt defaults.
+4. **Package groups** — core, session, CLI, theming, apps, extras.
+5. **System actions** — udev, limits, `/etc/rc.local`, groups, services.
+6. **Review** — every choice is shown before anything is changed.
+7. **Backup** — a timestamped `~/rice-backup-<stamp>/` with archives and a
+   `MANIFEST`.
+8. **Install** — packages first, then system, configs, fonts, wallpaper, and
+   desktop defaults, followed by a summary of skipped/manual items.
+
+`fzf` drives the menus. If it is missing, the installer offers to install it
+first. The UI loads its palette from `~/.colors`, falling back to this repo's
+`.colors`.
+
+### modes
+
+| mode | behavior |
+| --- | --- |
+| `copy` (default) | copy/merge rice files; keeps app data |
+| `link` | symlink managed files from this repo; edits are live |
+| `clean` | replace rice-managed config dirs; keeps user data |
+
+```sh
+./setup.sh --copy
+./setup.sh --link
+./setup.sh --clean
+```
+
+`clean` never deletes whole mixed dirs. `cmus` keeps its autosave, library, and
+playlists; `gh` keeps `hosts.yml`; `opencode` keeps auth, runtime state,
+`service.json`, and `node_modules`.
+
+### components
+
+All components are selected by default. Disable them with flags or the fzf
+menu:
+
 ```sh
 ./setup.sh --no-packages   # configs only, no xbps-install
 ./setup.sh --no-system     # skip udev/rc.local/limits/groups/services
 ./setup.sh --no-font       # skip the JetBrainsMono Nerd Font download
-./setup.sh --clean         # replace config dirs instead of merging
-./setup.sh --link          # symlink configs from this repo instead of copying
+./setup.sh --no-configs    # skip ~/.config, shell files, and .local/bin
+./setup.sh --no-wallpaper
+./setup.sh --no-gsettings
+./setup.sh --components=configs,packages,font
 ```
 
-`--link` is the dotfiles-style mode: edits in this repo show up immediately.
-`--clean` is useful after deleting files from the rice; the default merge keeps
-things like cmus autosave, playlists, and `~/.config/opencode` data.
-It also installs the scripts in `.local/bin` (they shadow the packaged/global
-versions when `~/.local/bin` is on your `PATH`): `pfetch`, plus the helpers
-`enshrouded-fg`, `mic-reset`, and `sudo-askpass`.
+System action flags: `--no-udev`, `--no-limits`, `--no-rclocal`, `--no-groups`,
+`--no-services`.
+
+The `.local/bin` helpers (`pfetch`, `enshrouded-fg`, `mic-reset`,
+`sudo-askpass`) shadow packaged/global versions when `~/.local/bin` is on
+`PATH`.
+
+### package groups
+
+```sh
+./setup.sh --package-groups=core,session,cli,theme,apps,extras
+```
+
+- **core** — mango, waybar, dunst, foot, fuzzel, screenshots, clipboard, media keys, OSD.
+- **session** — pipewire, bluez, portals, seatd, Qt/GTK deps, `pactl`, `notify-send`.
+- **cli** — zsh, fzf, git, neovim, btop, cmus, ripgrep, fd, zoxide, eza, bat, python3.
+- **theme** — Qt5/Qt6, Qt Wayland, Arc, Papirus, Nerd Font symbols, Noto emoji, DejaVu.
+- **apps** — chromium, imv, mpv, zathura, impala, bluetui, pavucontrol.
+- **extras** — flatpak.
+
+Only missing packages are installed. Packages unavailable in the current
+repository are reported and skipped instead of failing the whole transaction.
+
+### non-interactive / testing
+
+```sh
+./setup.sh --yes
+./setup.sh --yes --no-packages --no-system
+./setup.sh --link --yes
+./setup.sh --dry-run --yes
+```
+
+`--yes` uses copy+merge and selects all components, package groups, and system
+actions unless flags say otherwise. `--dry-run` prints every action and changes
+nothing, including not creating the backup directory. `--no-color` gives plain
+output.
+
+Use `--backup-dir DIR` to choose the backup location, or `--no-backup` to skip
+it (not recommended).
+
+### restore
+
+Each backup contains `config.tar.gz`, `shell-rc.tar.gz`, `local-bin.tar.gz`,
+`wallpaper.tar.gz`, `fonts.tar.gz` when applicable, and `system.tar.gz` when
+root was available. Restore everything with:
+
+```sh
+./setup.sh --restore ~/rice-backup-20261026-220000
+```
+
+The same `tar -xzf` commands are written to `MANIFEST`, so a backup is
+restorable even without the installer. `system.tar.gz` needs `sudo`; the
+installer handles that for you when you use `--restore`.
 
 ## config mirroring
-Everything under `.config/` in this repo is installed to `~/.config/` — the
-installer loops over the whole directory, so adding a new config dir here needs
-no `setup.sh` changes. With `--link` they become symlinks, so edits are
-immediate.
 
-Directories that mix rice config with user data are handled specially:
+Everything under `.config/` in this repo is installed to `~/.config/`, except
+the app-state files listed below — the installer loops over the whole
+directory, so adding a new config dir here needs no `setup.sh` changes. With
+`--link` they become symlinks, so edits are immediate.
 
-- `cmus` — only `rc` is linked; `autosave`, `lib.pl`, and playlists stay local.
-- `opencode` — repo config is copied over in every mode; auth data,
-  `node_modules`, and runtime state stay local.
-- `gh` — `config.yml` is linked/copied; `hosts.yml` (OAuth token) stays local.
+Directories that mix rice config with user data are handled specially in every
+mode:
+
+- `cmus` — only `rc`; `autosave`, `lib.pl`, playlists, and history stay local.
+- `opencode` — only `opencode.jsonc`, `tui.json`, `cli.json`, and `themes/`;
+  auth, `service.json`, package files, and `node_modules` stay local.
+- `gh` — only `config.yml`; `hosts.yml` (OAuth token) stays local.
+- `QtProject.conf` — skipped as app state; it stores recent-file paths, not
+  rice config.
 
 Not tracked on purpose: `chromium`, `dconf`, `pulse`, and `procps` (machine
 state), plus shell histories, caches, SSH keys, and the opencode service
-password.
+password. `.gitignore` also blocks `auth.json`, tokens, `.env` files,
+`gh/hosts.yml`, and `opencode/service.json`.
 
 ## system files
-`setup.sh` installs:
+
+`setup.sh` installs, after backing up the existing files:
+
 - `/etc/udev/rules.d/90-backlight.rules` and `90-fan.rules` so the `video` group can control the backlight and the ASUS fan curve without elogind.
 - `/etc/security/limits.d/20-nofile.conf` for a high open-file limit (Proton/Wine).
-- a small block in `/etc/rc.local` that creates `/run/user/$UID` at boot (there is no elogind here).
+- a small block in `/etc/rc.local` that creates `/run/user/$UID` at boot (there is no elogind here); the file is created executable if missing.
 - group membership for `video`, `input`, and `_seatd`, plus the `dbus`, `polkitd`, `bluetoothd`, and `seatd` services.
 
-If setup can't get root, it prints the manual commands.
+If setup can't get root, it prints the manual commands and carries on with the
+user-level install.
 
 ## desktop
 - **waybar:** workspaces, MPRIS, bluetooth, network, audio, backlight, CPU, CPU temp, fans, memory, battery, idle inhibitor, tray.
@@ -76,8 +177,9 @@ If setup can't get root, it prints the manual commands.
 
 ## colors
 `~/.colors` is the palette reference (void-dark, accent = Void green `#478061`).
-The consumers are still hand-synced — foot, waybar, dunst, fuzzel, swaylock,
-btop, Qt, nvim, and `bat` each embed their own copy. It is not a generated theme.
+The installer also reads it for its own output and the fzf menu colors. The
+consumers are still hand-synced — foot, waybar, dunst, fuzzel, swaylock, btop,
+Qt, nvim, and `bat` each embed their own copy. It is not a generated theme.
 `bat` reads `.config/bat/themes/void-dark.tmTheme` (selected via `BAT_THEME`;
 `cat` / `catn` / `catp` are the aliases).
 
