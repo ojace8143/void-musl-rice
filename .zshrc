@@ -25,8 +25,8 @@ setopt PROMPT_SUBST
 setopt NUMERIC_GLOB_SORT
 
 # ------------------------------------------------------------- path / bins -
-# user binaries: opencode, ~/.local/bin, and flatpak app CLI exports
-export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH"
+# user binaries: opencode, ~/.local/bin, ~/.cargo/bin, and flatpak app CLI exports
+export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH"
 
 # --------------------------------------------------------------- keys/edit -
 bindkey -e

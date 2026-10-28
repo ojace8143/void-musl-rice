@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Void Dark",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Void dark theme matching the void-musl-rice palette",
   "theme": {
     "colors": {
@@ -17,18 +17,38 @@
       "ntp_background": [27, 31, 35],
       "ntp_text": [201, 209, 207],
       "ntp_link": [111, 174, 134],
+      "ntp_link_underline": [111, 174, 134],
       "ntp_header": [32, 37, 42],
       "omnibox_background": [37, 43, 48],
-      "omnibox_text": [201, 209, 207],
+      "omnibox_text": [240, 244, 242],
+      "omnibox_text_selected": [240, 244, 242],
       "button_background": [37, 43, 48],
       "toolbar_button_icon": [201, 209, 207],
-      "toolbar_text": [201, 209, 207]
+      "toolbar_button_icon_pressed": [111, 174, 134],
+      "toolbar_button_icon_hovered": [111, 174, 134],
+      "toolbar_text": [201, 209, 207],
+      "background_tab": [27, 31, 35],
+      "background_tab_inactive": [27, 31, 35],
+      "control_background": [32, 37, 42],
+      "bubble_background": [32, 37, 42],
+      "bubble_text": [201, 209, 207],
+      "download_shelf_background": [27, 31, 35],
+      "download_shelf_text": [201, 209, 207],
+      "download_shelf_button_background": [37, 43, 48],
+      "overlay_background": [27, 31, 35],
+      "overlay_text": [201, 209, 207]
     },
     "tints": {
-      "buttons": [0.33, 0.5, 0.5]
+      "buttons": [-1.0, 0.5, 0.3],
+      "frame": [-1.0, 0.5, 0.2],
+      "frame_inactive": [-1.0, 0.5, 0.15],
+      "frame_incognito": [-1.0, 0.5, 0.2],
+      "frame_incognito_inactive": [-1.0, 0.5, 0.15],
+      "background_tab": [-1.0, 0.5, 0.15]
     },
     "properties": {
-      "ntp_background_alignment": "bottom"
+      "ntp_background_alignment": "bottom",
+      "ntp_logo_alternate": 0
     }
   }
 }
