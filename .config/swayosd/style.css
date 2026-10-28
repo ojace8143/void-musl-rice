@@ -1,35 +1,67 @@
 window {
   background-color: rgba(26, 26, 26, 0.96);
-  border: 2px solid #478061;
-  border-radius: 8px;
+  border: 1px solid #478061;
+  border-radius: 999px;
   color: #c9d1cf;
   font-family: "JetBrainsMono Nerd Font Mono";
-  font-size: 14px;
-  padding: 10px 16px;
+  font-size: 12px;
+  padding: 4px 12px;
 }
 
+/* The stock theme adds 16px of margin around the contents, which is what
+   made the OSD so tall and blocky. Reset it. */
 #container {
-  min-width: 220px;
+  margin: 0;
+}
+
+/* No icon: fade it out and collapse the space it takes up. */
+image {
+  opacity: 0;
+  margin: -16px;
 }
 
 progressbar {
-  min-height: 8px;
+  min-height: 4px;
+  border: none;
+  background: transparent;
+  /* Compensate for the 12px box spacing left behind by the hidden icon. */
+  margin-left: -12px;
 }
 
 trough {
+  min-height: inherit;
   background: #2a2a2a;
-  border-radius: 4px;
+  border: none;
+  border-radius: 999px;
 }
 
 progress {
+  min-height: inherit;
   background: #478061;
-  border-radius: 4px;
+  border: none;
+  border-radius: 999px;
+}
+
+segmentedprogress {
+  min-height: 4px;
+  margin-left: -12px;
+}
+
+segment {
+  min-height: inherit;
+  background: #2a2a2a;
+  border-radius: 999px;
+  margin-left: 4px;
+}
+
+segment:first-child {
+  margin-left: 0;
+}
+
+segment.active {
+  background: #478061;
 }
 
 label {
   color: #c9d1cf;
-}
-
-image {
-  color: #6fae86;
 }

@@ -1,0 +1,3 @@
+[server]
+# Keep the OSD to just the progress bar (no "50%" text).
+show_percentage = false
