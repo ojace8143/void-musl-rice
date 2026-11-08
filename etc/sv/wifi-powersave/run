@@ -1,0 +1,16 @@
+#!/bin/sh
+# Keep 802.11 power save off on the MediaTek MT7922.
+#
+# The mt7921e firmware plus an iPhone hotspot is a bad combination with power
+# save enabled (firmware hangs, link churn, occasionally a full system freeze).
+# Re-apply every minute so iwd/module reloads cannot turn it back on.
+exec 2>&1
+
+while :; do
+	for d in /sys/class/net/*; do
+		[ -e "$d/phy80211" ] || continue
+		dev=${d##*/}
+		/usr/bin/iw dev "$dev" set power_save off 2>/dev/null || true
+	done
+	sleep 60
+done

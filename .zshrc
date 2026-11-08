@@ -26,7 +26,8 @@ setopt NUMERIC_GLOB_SORT
 
 # ------------------------------------------------------------- path / bins -
 # user binaries: opencode, ~/.local/bin, ~/.cargo/bin, and flatpak app CLI exports
-export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH"
+export ZVM_INSTALL="$HOME/.zvm/self"
+export PATH="$HOME/.zvm/bin:$HOME/.opencode/bin:$HOME/.npm-global/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH"
 
 # --------------------------------------------------------------- keys/edit -
 bindkey -e
@@ -87,6 +88,9 @@ update() {
   return rc
 }
 alias cls='clear'
+
+# user aliases and functions
+[ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
 
 export EDITOR=nvim
 export MANPAGER='nvim +Man!'

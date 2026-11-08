@@ -106,7 +106,7 @@ Web page content styling is not affected — use Dark Reader if desired.
 - **cli** — zsh, fzf, git, neovim, btop, cmus, ripgrep, fd, zoxide, eza, bat, python3.
 - **theme** — Qt5/Qt6, Qt Wayland, Arc, Papirus, Nerd Font symbols, Noto emoji, DejaVu.
 - **apps** — chromium, imv, mpv, zathura, impala, bluetui, pavucontrol.
-- **extras** — flatpak.
+- **extras** — flatpak, openrgb (external-keyboard support for `ricelight`).
 
 Only missing packages are installed. Packages unavailable in the current
 repository are reported and skipped instead of failing the whole transaction.
@@ -169,6 +169,7 @@ password. `.gitignore` also blocks `auth.json`, tokens, `.env` files,
 `setup.sh` installs, after backing up the existing files:
 
 - `/etc/udev/rules.d/90-backlight.rules` and `90-fan.rules` so the `video` group can control the backlight and the ASUS fan curve without elogind.
+- `/etc/udev/rules.d/99-ricelight.rules` so `wheel` can drive the ASUS TUF keyboard RGB (`kbd_rgb_mode`) without sudo — used by `ricelight` (`SUPER+K`).
 - `/etc/security/limits.d/20-nofile.conf` for a high open-file limit (Proton/Wine).
 - a small block in `/etc/rc.local` that creates `/run/user/$UID` at boot (there is no elogind here); the file is created executable if missing.
 - group membership for `video`, `input`, and `_seatd`, plus the `dbus`, `polkitd`, `bluetoothd`, and `seatd` services.
@@ -180,6 +181,7 @@ user-level install.
 - **waybar:** workspaces, MPRIS, bluetooth, network, audio, backlight, CPU, CPU temp, fans, memory, battery, idle inhibitor, tray.
 - **OSD:** SwayOSD handles volume, microphone, brightness, and media keys.
 - **clipboard:** cliphist + wl-clip-persist; `SUPER+V` opens the picker.
+- **keyboard RGB:** `SUPER+K` opens `ricelight`, an fzf menu that paints the ASUS TUF keyboard (WMI sysfs) and any OpenRGB-detected external board with colors parsed live from `foot.ini [colors-dark]`. Last choice is re-applied at login; `--save-bios` persists it to firmware. See `.config/mango/scripts/ricelight/README.md`.
 - **power menu:** `SUPER+Escape` (lock / logout / suspend / reboot / shutdown). Because this setup uses seatd instead of elogind, `polkit-gnome` cannot determine a login session; root actions fall back to a `foot` + `sudo` prompt. If you switch to elogind, enable the polkit agent line in `config.conf`.
 - **night light:** `SUPER+CTRL+N` toggles gammastep at 4000K.
 - **notifications:** dunst, themed to match.
@@ -231,6 +233,7 @@ Meta+Space       -- Start Menu/Fuzzel
 Meta+D           -- Run Command (dmenu equivalent in dwm)
 Meta+Shift+Enter -- Chromium/Browser
 Meta+V           -- Clipboard history
+Meta+K           -- Keyboard RGB menu (ricelight)
 Meta+Escape      -- Power menu
 Meta+/           -- Keybinding cheat sheet
 PrtSc            -- Screenshot

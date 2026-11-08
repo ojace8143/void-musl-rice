@@ -1,0 +1,4 @@
+# ricelight — let the user (group wheel) drive the ASUS TUF keyboard RGB
+# without sudo. Also relaxes kbd_rgb_state (boot/awake/sleep light flags).
+SUBSYSTEM=="leds", KERNEL=="asus::kbd_backlight", RUN+="/usr/bin/chmod 0660 /sys%p/kbd_rgb_mode /sys%p/kbd_rgb_state"
+SUBSYSTEM=="leds", KERNEL=="asus::kbd_backlight", RUN+="/usr/bin/chgrp wheel /sys%p/kbd_rgb_mode /sys%p/kbd_rgb_state"

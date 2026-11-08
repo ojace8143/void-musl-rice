@@ -215,6 +215,21 @@ hl("@diff.plus", { fg = green_br })
 hl("@diff.minus", { fg = red_br })
 hl("@diff.delta", { fg = blue_br })
 
+-- extra treesitter captures used by c/cpp/bash/zig
+hl("@keyword.directive", { fg = cyan })
+hl("@keyword.directive.define", { fg = cyan_br })
+hl("@keyword.type", { fg = magenta })
+hl("@keyword.modifier", { fg = magenta })
+hl("@keyword.coroutine", { fg = magenta })
+hl("@keyword.conditional.ternary", { fg = magenta })
+hl("@comment.documentation", { fg = muted, italic = true })
+hl("@number.float", { fg = yellow })
+hl("@function.method.call", { fg = blue })
+hl("@string.regexp", { fg = cyan_br })
+hl("@string.special.path", { fg = blue_br })
+hl("@character.special", { fg = yellow })
+hl("@attribute", { fg = cyan })
+
 -- lsp semantic tokens
 hl("@lsp.type.class", { link = "@type" })
 hl("@lsp.type.struct", { link = "@type" })
@@ -230,6 +245,10 @@ hl("@lsp.type.variable", { link = "@variable" })
 hl("@lsp.type.namespace", { link = "@namespace" })
 hl("@lsp.type.keyword", { link = "@keyword" })
 hl("@lsp.type.decorator", { link = "@function" })
+hl("@lsp.type.type", { link = "@type" })
+hl("@lsp.type.typeParameter", { link = "@type" })
+hl("@lsp.type.operator", { link = "@operator" })
+hl("@lsp.type.field", { link = "@variable.member" })
 
 -- plugins
 hl("CmpItemAbbr", { fg = fg })

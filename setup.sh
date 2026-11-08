@@ -179,6 +179,7 @@ GROUP_APPS=(
 
 GROUP_EXTRAS=(
 	flatpak
+	openrgb
 )
 
 ###############################################################################
@@ -776,7 +777,7 @@ menu_package_groups() {
 		$'cli\tCLI/tools — zsh, fzf, git, neovim, btop, cmus, py ('"$(group_count cli)"' pkgs)' \
 		$'theme\tTheming/fonts — Qt, Arc, Papirus, Nerd Font symbols ('"$(group_count theme)"' pkgs)' \
 		$'apps\tApps — chromium, imv, mpv, zathura, network/audio GUIs ('"$(group_count apps)"' pkgs)' \
-		$'extras\tExtras — flatpak ('"$(group_count extras)"' pkgs)') || return 1
+		$'extras\tExtras — flatpak, openrgb / ricelight keyboard RGB ('"$(group_count extras)"' pkgs)') || return 1
 	[ -n "$selected" ] || return 1
 
 	local -a groups=()
@@ -995,6 +996,7 @@ system_backup() {
 		/etc/rc.local \
 		/etc/udev/rules.d/90-backlight.rules \
 		/etc/udev/rules.d/90-fan.rules \
+		/etc/udev/rules.d/99-ricelight.rules \
 		/etc/security/limits.d/20-nofile.conf; do
 		[ -e "$f" ] && files+=("$f")
 	done
@@ -1319,6 +1321,7 @@ print_manual_system() {
 				log "sudo install -m644 $RICE_DIR/etc/udev/rules.d/*.rules /etc/udev/rules.d/"
 				log "sudo udevadm control --reload"
 				log "sudo chgrp video /sys/class/backlight/*/brightness && sudo chmod g+w /sys/class/backlight/*/brightness"
+				log "sudo sh -c 'chmod 0660 /sys/class/leds/asus::kbd_backlight/kbd_rgb_* && chgrp wheel /sys/class/leds/asus::kbd_backlight/kbd_rgb_*'"
 				log "sudo sh $RICE_DIR/etc/fan-perms.sh"
 				;;
 			limits)
@@ -1341,7 +1344,7 @@ print_manual_system() {
 }
 
 apply_udev() {
-	local f bl
+	local f bl kbd_led=/sys/class/leds/asus::kbd_backlight
 	run_root mkdir -p /etc/udev/rules.d
 	for f in "$RICE_DIR"/etc/udev/rules.d/*.rules; do
 		[ -e "$f" ] || continue
@@ -1351,6 +1354,7 @@ apply_udev() {
 		run_root udevadm control --reload 2>/dev/null || true
 		run_root udevadm trigger --subsystem-match=backlight 2>/dev/null || true
 		run_root udevadm trigger --subsystem-match=hwmon 2>/dev/null || true
+		run_root udevadm trigger --subsystem-match=leds 2>/dev/null || true
 	fi
 	for bl in /sys/class/backlight/*; do
 		[ -e "$bl/brightness" ] || continue
@@ -1359,6 +1363,14 @@ apply_udev() {
 			log "backlight write access: $(basename "$bl")"
 		fi
 	done
+	# ASUS TUF WMI keyboard RGB (ricelight): rootless write access now,
+	# the 99-ricelight.rules keeps it across reboots/hotplug.
+	if [ -e "$kbd_led/kbd_rgb_mode" ]; then
+		if run_root chmod 0660 "$kbd_led/kbd_rgb_mode" "$kbd_led/kbd_rgb_state" 2>/dev/null &&
+			run_root chgrp wheel "$kbd_led/kbd_rgb_mode" "$kbd_led/kbd_rgb_state" 2>/dev/null; then
+			log "keyboard RGB write access: asus::kbd_backlight (ricelight)"
+		fi
+	fi
 	if [ -f "$RICE_DIR/etc/fan-perms.sh" ]; then
 		run_root sh "$RICE_DIR/etc/fan-perms.sh" || warn "fan permission helper failed"
 	fi
@@ -1700,6 +1712,10 @@ post_install() {
 	fi
 
 	mkdir -p "$HOME/Pictures/Screenshots" "$HOME/Videos/Recordings" "$HOME/.local/bin"
+	if [ "$COMP_CONFIGS" -eq 1 ] && [ -x "$HOME/.config/mango/scripts/ricelight/ricelight.sh" ]; then
+		ln -sf "$HOME/.config/mango/scripts/ricelight/ricelight.sh" "$HOME/.local/bin/ricelight"
+		ok "ricelight linked into ~/.local/bin (keyboard RGB, SUPER+K)"
+	fi
 	if [ "$COMP_CONFIGS" -eq 1 ] && command -v bat >/dev/null 2>&1; then
 		if bat cache --build >/dev/null 2>&1; then
 			ok "bat theme cache built"

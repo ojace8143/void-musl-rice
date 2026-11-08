@@ -114,6 +114,7 @@ LAUNCH / SESSION
   ALT+Space            start menu (fuzzel)
   SUPER+D              run-command menu (runmenu.sh)
   SUPER+V              clipboard history (cliphist)
+  SUPER+K              keyboard RGB menu (ricelight)
   SUPER+Escape         power menu (lock/logout/suspend/reboot/shutdown)
   SUPER+/              this cheat sheet
   SUPER+CTRL+N         toggle night light (gammastep)
