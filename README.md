@@ -206,8 +206,9 @@ on-scheme even in terminals that aren't foot. Override the text colors with full
 escape sequences via `PF_LABEL`, `PF_DATA`, `PF_TITLE`.
 
 ## fans
-Hold `` ` `` and press `1` / `2` / `3` to raise, lower, or return both fans to
-automatic (10% steps, normal notification on each change). The waybar module
+Hold **right Ctrl** and press `1` / `2` / `3` to raise, lower, or return both
+fans to automatic (10% steps, normal notification on each change). The `` ` ``
+key stays free for typing. The waybar module
 shows `<fan icon> left%/right%` (left = CPU fan, right = GPU fan). In automatic
 mode the percentage is estimated from the measured RPM after a one-time
 `fanctl.sh calibrate` run, because the firmware does not expose its PWM value.

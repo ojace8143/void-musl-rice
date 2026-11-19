@@ -29,6 +29,15 @@ setopt NUMERIC_GLOB_SORT
 export ZVM_INSTALL="$HOME/.zvm/self"
 export PATH="$HOME/.zvm/bin:$HOME/.opencode/bin:$HOME/.npm-global/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH"
 
+# CUDA toolkit: ~/Src/CUDA_HOME holds a symlink to the newest installed
+# toolkit in ~/Src (repoint it instead of editing this file on upgrade).
+export CUDA_HOME="$HOME/Src/CUDA_HOME"
+if [[ -d $CUDA_HOME ]]; then
+  path=("$CUDA_HOME/bin" $path)
+  export PATH
+  export LD_LIBRARY_PATH="$CUDA_HOME/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+fi
+
 # --------------------------------------------------------------- keys/edit -
 bindkey -e
 WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
