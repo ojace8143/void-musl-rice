@@ -45,6 +45,7 @@ COMP_SYSTEM=1
 COMP_FONT=1
 COMP_WALLPAPER=1
 COMP_GSETTINGS=1
+COMP_OPENCODE=1
 COMPONENTS_SET=0
 
 # System actions (all on by default).
@@ -69,6 +70,7 @@ BACKUP_DIR=
 PACKAGE_FAILED=0
 SYSTEM_CHANGED=0
 declare -A AVAIL_CACHE=()
+declare -A OPT_OUT=()
 
 # Runtime environment.
 TARGET_USER=
@@ -427,8 +429,9 @@ Components (all selected by default):
   --no-system             skip udev/limits/rc.local/groups/services
   --no-font               skip the JetBrainsMono Nerd Font download
   --no-wallpaper          skip wallpapers
-  --no-gsettings          skip GTK/Qt desktop defaults
-  --components=LIST       comma list: configs,packages,system,font,wallpaper,gsettings
+  --no-gsettings          skip GTK/Qt defaults
+  --no-opencode           skip opencode config (OpenCode Go)
+  --components=LIST       comma list: configs,packages,system,font,wallpaper,gsettings,opencode
 
 Package groups (all selected by default):
   --package-groups=LIST   comma list: core,session,cli,theme,apps,extras
@@ -481,6 +484,7 @@ parse_args() {
 			--no-font) COMP_FONT=0; COMPONENTS_SET=1 ;;
 			--no-wallpaper) COMP_WALLPAPER=0; COMPONENTS_SET=1 ;;
 			--no-gsettings) COMP_GSETTINGS=0; COMPONENTS_SET=1 ;;
+			--no-opencode) COMP_OPENCODE=0; OPT_OUT[opencode]=1; COMPONENTS_SET=1 ;;
 			--no-udev) SYS_UDEV=0; SYS_ACTIONS_SET=1 ;;
 			--no-limits) SYS_LIMITS=0; SYS_ACTIONS_SET=1 ;;
 			--no-rclocal) SYS_RCLOCAL=0; SYS_ACTIONS_SET=1 ;;
@@ -537,6 +541,7 @@ set_components_from_csv() {
 	COMP_FONT=0
 	COMP_WALLPAPER=0
 	COMP_GSETTINGS=0
+	COMP_OPENCODE=0
 	IFS=',' read -r -a items <<< "$csv"
 	for item in "${items[@]}"; do
 		item=${item//[[:space:]]/}
@@ -548,6 +553,7 @@ set_components_from_csv() {
 			font) COMP_FONT=1 ;;
 			wallpaper) COMP_WALLPAPER=1 ;;
 			gsettings) COMP_GSETTINGS=1 ;;
+			opencode) COMP_OPENCODE=1 ;;
 			*) die "unknown component: $item" ;;
 		esac
 	done
@@ -686,22 +692,24 @@ component_label() {
 		font) printf 'JetBrainsMono Nerd Font' ;;
 		wallpaper) printf 'wallpapers' ;;
 		gsettings) printf 'GTK/Qt defaults' ;;
-	esac
-}
+		opencode) printf 'opencode config (OpenCode Go)' ;;
+		esac
+	}
 
-selected_components() {
-	local -a out=()
-	[ "$COMP_CONFIGS" -eq 1 ] && out+=("configs")
-	[ "$COMP_PACKAGES" -eq 1 ] && out+=("packages")
-	[ "$COMP_SYSTEM" -eq 1 ] && out+=("system")
-	[ "$COMP_FONT" -eq 1 ] && out+=("font")
-	[ "$COMP_WALLPAPER" -eq 1 ] && out+=("wallpaper")
-	[ "$COMP_GSETTINGS" -eq 1 ] && out+=("gsettings")
-	[ "${#out[@]}" -gt 0 ] || return 1
-	printf '%s\n' "${out[@]}"
-}
+	selected_components() {
+		local -a out=()
+		[ "$COMP_CONFIGS" -eq 1 ] && out+=("configs")
+		[ "$COMP_PACKAGES" -eq 1 ] && out+=("packages")
+		[ "$COMP_SYSTEM" -eq 1 ] && out+=("system")
+		[ "$COMP_FONT" -eq 1 ] && out+=("font")
+		[ "$COMP_WALLPAPER" -eq 1 ] && out+=("wallpaper")
+		[ "$COMP_GSETTINGS" -eq 1 ] && out+=("gsettings")
+		[ "$COMP_OPENCODE" -eq 1 ] && out+=("opencode")
+		[ "${#out[@]}" -gt 0 ] || return 1
+		printf '%s\n' "${out[@]}"
+	}
 
-menu_mode() {
+	menu_mode() {
 	local choice
 	choice=$(fzf_pick \
 		$'Choose how the rice files should be installed.\nTAB is not needed here; ENTER selects, ESC cancels.' \
@@ -716,6 +724,7 @@ menu_mode() {
 }
 
 menu_components() {
+	COMP_OPENCODE=0
 	local selected id
 	selected=$(fzf_multi \
 		$'SPACE/TAB toggle · CTRL-A all · CTRL-D none · ENTER confirm\nAll components start selected.' \
@@ -725,7 +734,8 @@ menu_components() {
 		$'system\tudev, limits, rc.local, groups, and services' \
 		$'font\tDownload JetBrainsMono Nerd Font' \
 		$'wallpaper\tInstall wallpapers into ~/media/pictures' \
-		$'gsettings\tApply GTK/Qt desktop defaults') || return 1
+		$'gsettings\tApply GTK/Qt desktop defaults' \
+		$'opencode\tOpenCode Go configuration') || return 1
 	[ -n "$selected" ] || return 1
 
 	COMP_CONFIGS=0
@@ -743,10 +753,11 @@ menu_components() {
 			font) COMP_FONT=1 ;;
 			wallpaper) COMP_WALLPAPER=1 ;;
 			gsettings) COMP_GSETTINGS=1 ;;
+			opencode) COMP_OPENCODE=1 ;;
 		esac
 	done <<< "$selected"
 
-	[ "$COMP_CONFIGS$COMP_PACKAGES$COMP_SYSTEM$COMP_FONT$COMP_WALLPAPER$COMP_GSETTINGS" != "000000" ] || return 1
+	[ "$COMP_CONFIGS$COMP_PACKAGES$COMP_SYSTEM$COMP_FONT$COMP_WALLPAPER$COMP_GSETTINGS$COMP_OPENCODE" != "0000000" ] || return 1
 	COMPONENTS_SET=1
 }
 
@@ -834,6 +845,30 @@ menu_system_actions() {
 	fi
 }
 
+menu_opt_outs() {
+	local selected id
+	OPT_OUT[opencode]=0
+	OPT_OUT[gh]=0
+	OPT_OUT[cmus]=0
+	OPT_OUT[chromium-theme]=0
+	OPT_OUT[gsettings]=0
+
+	selected=$(fzf_multi \
+		$'SPACE/TAB toggle · CTRL-A all · CTRL-D none · ENTER confirm\nSelect items to skip during installation.' \
+		"Opt-outs" \
+		$'opencode\tSkip opencode config' \
+		$'gh\tSkip GitHub CLI config' \
+		$'cmus\tSkip cmus config' \
+		$'chromium-theme\tSkip chromium theme' \
+		$'gsettings\tSkip GTK/Qt defaults') || return 1
+	[ -n "$selected" ] || return 1
+
+	while IFS= read -r id; do
+		[ -n "$id" ] || continue
+		OPT_OUT[$id]=1
+	done <<< "$selected"
+}
+
 selected_system_actions() {
 	local -a out=()
 	[ "$SYS_UDEV" -eq 1 ] && out+=("udev")
@@ -902,11 +937,25 @@ print_summary() {
 		printf '  %-13s %s\n' "backup" "${BACKUP_DIR:-$HOME/rice-backup-<timestamp>}"
 	fi
 
+	# Opt-outs summary
+	local -a opted_out=()
+	[ "${OPT_OUT[opencode]:-0}" -eq 1 ] && opted_out+=("opencode")
+	[ "${OPT_OUT[gh]:-0}" -eq 1 ] && opted_out+=("gh")
+	[ "${OPT_OUT[cmus]:-0}" -eq 1 ] && opted_out+=("cmus")
+	[ "${OPT_OUT[chromium-theme]:-0}" -eq 1 ] && opted_out+=("chromium-theme")
+	[ "${OPT_OUT[gsettings]:-0}" -eq 1 ] && opted_out+=("gsettings")
+	if [ "${#opted_out[@]}" -gt 0 ]; then
+		printf '  %-13s %s\n' "opt-outs" "${opted_out[*]}"
+	else
+		printf '  %-13s %s\n' "opt-outs" "none (all items will be installed)"
+	fi
+
 	if [ "$MODE" = clean ]; then
 		warn "clean mode replaces rice-managed config dirs; cmus/gh/opencode user data is preserved."
 	fi
 	if [ "$COMP_CONFIGS" -eq 0 ] && [ "$COMP_PACKAGES" -eq 0 ] && [ "$COMP_SYSTEM" -eq 0 ] \
-		&& [ "$COMP_FONT" -eq 0 ] && [ "$COMP_WALLPAPER" -eq 0 ] && [ "$COMP_GSETTINGS" -eq 0 ]; then
+		&& [ "$COMP_FONT" -eq 0 ] && [ "$COMP_WALLPAPER" -eq 0 ] && [ "$COMP_GSETTINGS" -eq 0 ] \
+		&& [ "$COMP_OPENCODE" -eq 0 ]; then
 		die "nothing selected"
 	fi
 }
@@ -923,6 +972,7 @@ review_loop() {
 			$'components\tChange components' \
 			$'packages\tChange package groups' \
 			$'system\tChange system actions' \
+			$'opt-outs\tChange opt-outs' \
 			$'cancel\tCancel') || die "cancelled"
 		case "$action" in
 			start) return 0 ;;
@@ -942,6 +992,7 @@ review_loop() {
 					warn "system integration is not enabled; select the system component first."
 				fi
 				;;
+			opt-outs) menu_opt_outs || true ;;
 			cancel) die "cancelled" ;;
 		esac
 	done
@@ -959,6 +1010,21 @@ interactive_flow() {
 	fi
 	if [ "$COMP_SYSTEM" -eq 1 ] && [ "$SYS_ACTIONS_SET" -eq 0 ]; then
 		menu_system_actions || die "cancelled"
+	fi
+	# Opt-outs menu
+	if [ "$ASSUME_YES" -eq 0 ]; then
+		local opt_action
+		opt_action=$(fzf_pick \
+			$'Choose whether to skip specific items during installation.\nENTER selects, ESC cancels.' \
+			"Opt-outs" \
+			$'skip\tSkip specific items (open opt-outs menu)' \
+			$'skip-none\tDo not skip anything' \
+			$'cancel\tCancel install') || die "cancelled"
+		case "$opt_action" in
+			skip) menu_opt_outs || die "cancelled" ;;
+			skip-none) ;;
+			cancel) die "cancelled" ;;
+		esac
 	fi
 	review_loop
 }
@@ -1536,21 +1602,33 @@ install_configs() {
 		name=$(basename "$item")
 		case "$name" in
 			cmus)
-				ensure_dir "$HOME/.config/cmus"
-				install_path "$item/rc" "$HOME/.config/cmus/rc"
-				log ".config/cmus/rc (autosave/playlists kept)"
+				if [ "${OPT_OUT[cmus]:-0}" -eq 1 ]; then
+					log "[opt-out] skipping cmus config"
+				else
+					ensure_dir "$HOME/.config/cmus"
+					install_path "$item/rc" "$HOME/.config/cmus/rc"
+					log ".config/cmus/rc (autosave/playlists kept)"
+				fi
 				;;
 			gh)
-				install_path "$item/config.yml" "$HOME/.config/gh/config.yml"
-				log ".config/gh/config.yml (hosts.yml kept)"
+				if [ "${OPT_OUT[gh]:-0}" -eq 1 ]; then
+					log "[opt-out] skipping gh config"
+				else
+					install_path "$item/config.yml" "$HOME/.config/gh/config.yml"
+					log ".config/gh/config.yml (hosts.yml kept)"
+				fi
 				;;
 			opencode)
-				ensure_dir "$HOME/.config/opencode"
+				if [ "${OPT_OUT[opencode]:-0}" -eq 1 ]; then
+					log "[opt-out] skipping opencode config"
+				else
+					ensure_dir "$HOME/.config/opencode"
 				for f in opencode.jsonc tui.json cli.json themes; do
 					[ -e "$item/$f" ] || continue
 					install_path "$item/$f" "$HOME/.config/opencode/$f"
 				done
 				log ".config/opencode (auth/service/node_modules kept)"
+				fi
 				;;
 			QtProject.conf)
 				log ".config/QtProject.conf skipped (app state)"
@@ -1581,7 +1659,9 @@ install_configs() {
 	fi
 
 	# Chromium theme (not auto-installed into profile)
-	if [ -d "$RICE_DIR/.config/chromium-theme/void-dark" ]; then
+	if [ "${OPT_OUT[chromium-theme]:-0}" -eq 1 ]; then
+		log "[opt-out] skipping chromium theme"
+	elif [ -d "$RICE_DIR/.config/chromium-theme/void-dark" ]; then
 		if [ "$DRY_RUN" -eq 1 ]; then
 			log "[dry-run] would install chromium theme to ~/.local/share/chromium-themes/void-dark"
 		else
@@ -1671,6 +1751,10 @@ install_wallpapers() {
 
 apply_gsettings() {
 	[ "$COMP_GSETTINGS" -eq 1 ] || return 0
+	if [ "${OPT_OUT[gsettings]:-0}" -eq 1 ]; then
+		log "[opt-out] skipping gsettings defaults"
+		return 0
+	fi
 	section "GTK/Qt defaults"
 	if ! command -v gsettings >/dev/null 2>&1; then
 		warn "gsettings not found; skipped"
