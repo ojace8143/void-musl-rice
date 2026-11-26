@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-mkdir -p "$HOME/Pictures/Screenshots"
-filepath="$HOME/Pictures/Screenshots/$(date +%Y%m%d-%H%M%S).png"
+mkdir -p "$HOME/media/pictures/screenshots"
+filepath="$HOME/media/pictures/screenshots/$(date +%Y%m%d-%H%M%S).png"
 
 notify() {
   command -v notify-send >/dev/null 2>&1 || return 0

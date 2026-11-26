@@ -724,7 +724,7 @@ menu_components() {
 		$'packages\tInstall xbps packages (choose groups next)' \
 		$'system\tudev, limits, rc.local, groups, and services' \
 		$'font\tDownload JetBrainsMono Nerd Font' \
-		$'wallpaper\tInstall wallpapers into ~/Pictures' \
+		$'wallpaper\tInstall wallpapers into ~/media/pictures' \
 		$'gsettings\tApply GTK/Qt desktop defaults') || return 1
 	[ -n "$selected" ] || return 1
 
@@ -1071,7 +1071,7 @@ make_backup() {
 	if [ "$COMP_WALLPAPER" -eq 1 ]; then
 		for wp in "$RICE_DIR"/wallpapers/*; do
 			[ -e "$wp" ] || continue
-			target="Pictures/$(basename "$wp")"
+			target="media/pictures/$(basename "$wp")"
 			[ -e "$HOME/$target" ] && wallpaper_backup+=("$target")
 		done
 	fi
@@ -1650,21 +1650,21 @@ install_fonts() {
 install_wallpapers() {
 	[ "$COMP_WALLPAPER" -eq 1 ] || return 0
 	section "Wallpapers"
-	ensure_dir "$HOME/Pictures"
+	ensure_dir "$HOME/media/pictures"
 	local wp
 	for wp in "$RICE_DIR"/wallpapers/*; do
 		[ -e "$wp" ] || continue
 		if [ "$DRY_RUN" -eq 1 ]; then
-			log "[dry-run] copy $(basename "$wp") -> ~/Pictures/"
+			log "[dry-run] copy $(basename "$wp") -> ~/media/pictures/"
 			continue
 		fi
 		if command -v cmp >/dev/null 2>&1 &&
-			[ -e "$HOME/Pictures/$(basename "$wp")" ] &&
-			cmp -s "$wp" "$HOME/Pictures/$(basename "$wp")"; then
-			log "Pictures/$(basename "$wp") unchanged"
+			[ -e "$HOME/media/pictures/$(basename "$wp")" ] &&
+			cmp -s "$wp" "$HOME/media/pictures/$(basename "$wp")"; then
+			log "media/pictures/$(basename "$wp") unchanged"
 		else
-			cp -a "$wp" "$HOME/Pictures/"
-			log "Pictures/$(basename "$wp")"
+			cp -a "$wp" "$HOME/media/pictures/"
+			log "media/pictures/$(basename "$wp")"
 		fi
 	done
 }
@@ -1711,7 +1711,7 @@ post_install() {
 		return 0
 	fi
 
-	mkdir -p "$HOME/Pictures/Screenshots" "$HOME/Videos/Recordings" "$HOME/.local/bin"
+	mkdir -p "$HOME/media/pictures/screenshots" "$HOME/media/videos/recordings" "$HOME/.local/bin"
 	if [ "$COMP_CONFIGS" -eq 1 ] && [ -x "$HOME/.config/mango/scripts/ricelight/ricelight.sh" ]; then
 		ln -sf "$HOME/.config/mango/scripts/ricelight/ricelight.sh" "$HOME/.local/bin/ricelight"
 		ok "ricelight linked into ~/.local/bin (keyboard RGB, SUPER+K)"

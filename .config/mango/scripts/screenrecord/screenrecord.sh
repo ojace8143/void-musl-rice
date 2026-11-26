@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-outdir="$HOME/Videos/Recordings"
+outdir="$HOME/media/videos/recordings"
 mkdir -p "$outdir"
 state="${XDG_RUNTIME_DIR:-/tmp}/wf-recorder.pid"
 

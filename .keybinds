@@ -78,7 +78,7 @@ COMMAND LINE
   Ctrl+C         "type :quit to exit" reminder
 
 USEFUL COMMANDS  (after ':')
-  :add ~/Music            import into library   (-p playlist, -q queue)
+  :add ~/media/music            import into library   (-p playlist, -q queue)
   :clear                  empty current view
   :save / :load           persist / restore library + playlists
   :set option=value       e.g. :set repeat=true

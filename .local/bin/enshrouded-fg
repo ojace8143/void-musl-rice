@@ -2,7 +2,7 @@
 # Install / inspect / remove the "Enshrouded DLSS Frame Generation" mod
 # (Nexus mod 141 by Biozilla) for the Proton install of Enshrouded.
 #
-#   enshrouded-fg install ~/Downloads/<mod>.zip
+#   enshrouded-fg install ~/downloads/<mod>.zip
 #   enshrouded-fg status
 #   enshrouded-fg uninstall
 #

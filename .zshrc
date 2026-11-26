@@ -29,14 +29,17 @@ setopt NUMERIC_GLOB_SORT
 export ZVM_INSTALL="$HOME/.zvm/self"
 export PATH="$HOME/.zvm/bin:$HOME/.opencode/bin:$HOME/.npm-global/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH"
 
-# CUDA toolkit: ~/Src/CUDA_HOME holds a symlink to the newest installed
-# toolkit in ~/Src (repoint it instead of editing this file on upgrade).
-export CUDA_HOME="$HOME/Src/CUDA_HOME"
+# CUDA toolkit: ~/src/CUDA_HOME holds a symlink to the newest installed
+# toolkit in ~/src (repoint it instead of editing this file on upgrade).
+export CUDA_HOME="$HOME/src/CUDA_HOME"
 if [[ -d $CUDA_HOME ]]; then
   path=("$CUDA_HOME/bin" $path)
   export PATH
   export LD_LIBRARY_PATH="$CUDA_HOME/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 fi
+
+# local llama-server API key, consumed by ~/.pi/agent/models.json
+export LLM_LOCAL_API_KEY='6e201882b912dc489426b44a43c6831730a0242ea4aa575d'
 
 # --------------------------------------------------------------- keys/edit -
 bindkey -e

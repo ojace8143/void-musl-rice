@@ -5,7 +5,7 @@ if pgrep -x swaylock >/dev/null 2>&1; then
   exit 0
 fi
 
-wall="${SWAYLOCK_WALLPAPER:-$HOME/Pictures/wallpaper.jpg}"
+wall="${SWAYLOCK_WALLPAPER:-$HOME/media/pictures/wallpaper.jpg}"
 runtime="${XDG_RUNTIME_DIR:-/tmp}"
 blur="${SWAYLOCK_BLUR:-14}"
 brightness="${SWAYLOCK_BRIGHTNESS:-65}"
